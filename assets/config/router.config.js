@@ -17,74 +17,91 @@ export default [
     Routes: ['src/pages/Authorized'],
     authority: ['admin', 'user'],
     routes: [
-      // dashboard
-      { path: '/', redirect: '/dashboard/analysis' },
+      // 首页
+      { path: '/', redirect: '/dashboard' },
       {
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',
+        component: './Dashboard',
+      },
+      // 会员信息管理
+      {
+        path: '/info',
+        icon: 'form',
+        name: 'info',
         routes: [
           {
-            path: '/dashboard/analysis',
-            name: 'analysis',
-            component: './Dashboard/Analysis',
+            path: '/info/add-user',
+            name: 'add',
+            component: './UserInfo',
           },
           {
-            path: '/dashboard/monitor',
-            name: 'monitor',
-            component: './Dashboard/Monitor',
+            path: '/info/update-user',
+            name: 'update',
+            component: './UserInfo',
           },
           {
-            path: '/dashboard/workplace',
-            name: 'workplace',
-            component: './Dashboard/Workplace',
+            path: '/info/del-user',
+            name: 'del',
+            component: './UserInfo',
           },
         ],
       },
-      // forms
+      // 会员卡管理
       {
-        path: '/form',
+        path: '/card',
         icon: 'form',
-        name: 'form',
+        name: 'card',
         routes: [
           {
-            path: '/form/basic-form',
-            name: 'basicform',
+            path: '/card/basic-form',
+            name: 'replace',
             component: './Forms/BasicForm',
           },
           {
-            path: '/form/step-form',
-            name: 'stepform',
+            path: '/card/step-form',
+            name: 'charge',
             component: './Forms/StepForm',
-            hideChildrenInMenu: true,
-            routes: [
-              {
-                path: '/form/step-form',
-                redirect: '/form/step-form/info',
-              },
-              {
-                path: '/form/step-form/info',
-                name: 'info',
-                component: './Forms/StepForm/Step1',
-              },
-              {
-                path: '/form/step-form/confirm',
-                name: 'confirm',
-                component: './Forms/StepForm/Step2',
-              },
-              {
-                path: '/form/step-form/result',
-                name: 'result',
-                component: './Forms/StepForm/Step3',
-              },
-            ],
+            // hideChildrenInMenu: true,
+            // routes: [
+            //   {
+            //     path: '/card/step-form',
+            //     redirect: '/form/step-form/info',
+            //   },
+            //   {
+            //     path: '/form/step-form/info',
+            //     name: 'info',
+            //     component: './Forms/StepForm/Step1',
+            //   },
+            //   {
+            //     path: '/form/step-form/confirm',
+            //     name: 'confirm',
+            //     component: './Forms/StepForm/Step2',
+            //   },
+            //   {
+            //     path: '/form/step-form/result',
+            //     name: 'result',
+            //     component: './Forms/StepForm/Step3',
+            //   },
+            // ],
           },
           {
-            path: '/form/advanced-form',
-            name: 'advancedform',
-            authority: ['admin'],
-            component: './Forms/AdvancedForm',
+            path: '/card/basic-form',
+            name: 'lost',
+            component: './Forms/BasicForm',
           },
+          {
+            path: '/card/step-form',
+            name: 'lock',
+            component: './Forms/StepForm',
+          },
+          // {
+          //   path: '/form/advanced-form',
+          //   name: 'advancedform',
+          //   authority: ['admin'],
+          //   component: './Forms/AdvancedForm',
+          // },
         ],
       },
       // list
@@ -136,122 +153,139 @@ export default [
           },
         ],
       },
+      // 会员卡管理
       {
-        path: '/profile',
-        name: 'profile',
+        path: '/card',
+        name: 'card',
         icon: 'profile',
         routes: [
-          // profile
           {
-            path: '/profile/basic',
-            name: 'basic',
+            path: '/card/replace',
+            name: 'replace',
             component: './Profile/BasicProfile',
           },
           {
-            path: '/profile/advanced',
-            name: 'advanced',
+            path: '/card/charge',
+            name: 'charge',
+            authority: ['admin'],
+            component: './Profile/AdvancedProfile',
+          },
+          {
+            path: '/card/lost',
+            name: 'lost',
+            component: './Profile/BasicProfile',
+          },
+          {
+            path: '/card/lock',
+            name: 'lock',
             authority: ['admin'],
             component: './Profile/AdvancedProfile',
           },
         ],
       },
+      // 会员消费管理
       {
-        name: 'result',
+        name: 'consumption',
         icon: 'check-circle-o',
-        path: '/result',
+        path: '/consumption',
         routes: [
-          // result
           {
-            path: '/result/success',
-            name: 'success',
+            path: '/consumption/add',
+            name: 'add',
             component: './Result/Success',
           },
-          { path: '/result/fail', name: 'fail', component: './Result/Error' },
+          {
+            path: '/consumption/refund',
+            name: 'refund',
+            component: './Result/Error',
+          },
         ],
       },
+      // 积分兑换管理
       {
-        name: 'exception',
+        name: 'score',
         icon: 'warning',
-        path: '/exception',
+        path: '/score',
         routes: [
-          // exception
           {
-            path: '/exception/403',
-            name: 'not-permission',
+            path: '/score/birth',
+            name: 'birth',
             component: './Exception/403',
           },
           {
-            path: '/exception/404',
-            name: 'not-find',
+            path: '/score/consumption',
+            name: 'consumption',
             component: './Exception/404',
           },
           {
-            path: '/exception/500',
-            name: 'server-error',
+            path: '/score/gift-exchange',
+            name: 'gift-exchange',
             component: './Exception/500',
           },
           {
-            path: '/exception/trigger',
-            name: 'trigger',
-            hideInMenu: true,
+            path: '/score/gift-manage',
+            name: 'gift-manage',
+            // hideInMenu: true,
             component: './Exception/TriggerException',
           },
         ],
       },
+      // 短信管理
       {
-        name: 'account',
+        name: 'message',
         icon: 'user',
-        path: '/account',
+        path: '/message',
         routes: [
           {
-            path: '/account/center',
-            name: 'center',
+            path: '/message/activation',
+            name: 'activation',
             component: './Account/Center/Center',
-            routes: [
-              {
-                path: '/account/center',
-                redirect: '/account/center/articles',
-              },
-              {
-                path: '/account/center/articles',
-                component: './Account/Center/Articles',
-              },
-              {
-                path: '/account/center/applications',
-                component: './Account/Center/Applications',
-              },
-              {
-                path: '/account/center/projects',
-                component: './Account/Center/Projects',
-              },
-            ],
           },
           {
-            path: '/account/settings',
-            name: 'settings',
+            path: '/message/pay',
+            name: 'pay',
             component: './Account/Settings/Info',
-            routes: [
-              {
-                path: '/account/settings',
-                redirect: '/account/settings/base',
-              },
-              {
-                path: '/account/settings/base',
-                component: './Account/Settings/BaseView',
-              },
-              {
-                path: '/account/settings/security',
-                component: './Account/Settings/SecurityView',
-              },
-              {
-                path: '/account/settings/binding',
-                component: './Account/Settings/BindingView',
-              },
-              {
-                path: '/account/settings/notification',
-                component: './Account/Settings/NotificationView',
-              },
-            ],
+          },
+          {
+            path: '/message/recharge',
+            name: 'recharge',
+            component: './Account/Center/Center',
+          },
+          {
+            path: '/message/exchange',
+            name: 'exchange',
+            component: './Account/Settings/Info',
+          },
+          {
+            path: '/message/birth',
+            name: 'birth',
+            component: './Account/Center/Center',
+          },
+          {
+            path: '/message/refund',
+            name: 'refund',
+            component: './Account/Settings/Info',
+          },
+        ],
+      },
+      // 个人中心
+      {
+        name: 'personal',
+        icon: 'check-circle-o',
+        path: '/personal',
+        authority: ['user'],
+        routes: [
+          {
+            path: '/personal/info-update',
+            name: 'info-update',
+            authority: ['user'],
+            component: './Result/Success',
+          },
+          {
+            path: '/personal/gift',
+            name: 'gift',
+            authority: ['user'],
+            component: './Result/Error',
           },
         ],
       },
