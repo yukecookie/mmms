@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from 'antd';
+import { formatMessage } from 'umi/locale';
 import styles from './index.less';
 
 export default {
@@ -8,7 +9,7 @@ export default {
       size: 'large',
       id: 'userName',
       prefix: <Icon type="user" className={styles.prefixIcon} />,
-      placeholder: 'admin',
+      placeholder: `${formatMessage({ id: 'app.login.userName' })}`,
     },
     rules: [
       {
@@ -23,7 +24,7 @@ export default {
       prefix: <Icon type="lock" className={styles.prefixIcon} />,
       type: 'password',
       id: 'password',
-      placeholder: '888888',
+      placeholder: `${formatMessage({ id: 'app.login.password' })}`,
     },
     rules: [
       {

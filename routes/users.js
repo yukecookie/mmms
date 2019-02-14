@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 //引入数据库连接模块
 const pool = require("./pool");
-//问汪：怎么改成application/json
+//问：怎么改成application/json
 
 // 登录
-router.post("/login", (req, res) => {
-  const username = req.body.username;
+router.post("/server/api/login/account", (req, res) => {
+  console.log(req);
+  const username = req.body.userName;
   const password = req.body.password;
   (async function() {
     await new Promise(function(open) {
@@ -15,13 +16,27 @@ router.post("/login", (req, res) => {
         if (err) throw err;
         //设置响应头解决跨域
         // res.writeHead(200, {
-        // "content-type": "application/json;charset=utf-8", // application/json   text/plain
+        // "content-type": "application/x-www-form-urlencoded;charset=utf-8", // application/json   text/plain  application/x-www-form-urlencoded,multipart/form-data
         // "Access-Control-Allow-Origin": "*"
         // });
         if (result.length > 0) {
+          console.log(123);
           //如果用户存在，将用户的id保存在session中
           req.session.username = result[0].username;
-          result = result[0];
+          if(username === 'admin') {
+            result = {
+              status: 'ok',
+              type,
+              currentAuthority: 'admin',
+            }
+          } else{
+            result = {
+              status: 'ok',
+              type,
+              currentAuthority: 'user',
+            }
+          }
+          
           // obj.result = result[0];
           // res.write(
           //   JSON.stringify({

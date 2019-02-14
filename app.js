@@ -11,7 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const app = express();
 app.use(cors({
-  origin:'http://localhost:3001',
+  origin:'http://localhost:8001',
   methods:['GET','POST'],
   allowedHeaders:['Content-Type', 'Authorization'],
   // credentials:true

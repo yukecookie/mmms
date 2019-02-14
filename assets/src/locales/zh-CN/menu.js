@@ -36,4 +36,6 @@ export default {
   'menu.personal': '个人中心',
   'menu.personal.info-update': '修改个人信息',
   'menu.personal.gift': '积分兑换礼品',
+  'menu.account.pwd': '修改密码',
+  'menu.account.logout': '退出登录',
 };

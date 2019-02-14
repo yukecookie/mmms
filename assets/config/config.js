@@ -37,6 +37,13 @@ const plugins = [
             hardSource: false,
           }
         : {}),
+      proxy: {
+        '/server/api/': {
+          target: 'http://localhost:8090/',
+          changeOrigin: true,
+          pathRewrite: { '^/server': '' }, // /server/api/currentUser -> /api/currentUser
+        },
+      },
     },
   ],
 ];
@@ -74,9 +81,9 @@ export default {
   },
   // proxy: {
   //   '/server/api/': {
-  //     target: 'https://preview.pro.ant.design/',
+  //     target: 'http://localhost:8090/',
   //     changeOrigin: true,
-  //     pathRewrite: { '^/server': '' },
+  //     pathRewrite: { '^/server': '' }, // /server/api/currentUser -> /api/currentUser
   //   },
   // },
   ignoreMomentLocale: true,

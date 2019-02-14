@@ -1,8 +1,11 @@
 import fetch from 'dva/fetch';
 import { notification } from 'antd';
+// import querystring from 'querystring';
 import router from 'umi/router';
 import hash from 'hash.js';
 import { isAntdPro } from './utils';
+// import { generateUrlWithGetParam } from './utils';
+// import { clearAuthorization, getAuthorization } from './Auth/auth';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -153,3 +156,119 @@ export default function request(url, option) {
       }
     });
 }
+
+/**
+ * Requests a URL, returning a promise.
+ *
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ * @return {object}           An object containing either "data" or "err"
+ */
+// export default function request(url, options = {}) {
+//   const defaultOptions = {
+//     credentials: 'include',
+//     method: 'GET',
+//   };
+//   let newUrl = url;
+//   const { isGetText, isDownLoad, ...restOptions } = options;
+//   let isExportFile = isDownLoad;
+//   const newOptions = { ...defaultOptions, ...restOptions };
+//   if (newOptions.method === 'POST' || newOptions.method === 'PUT' || newOptions.method === 'DELETE' || newOptions.method === 'PATCH') {
+//     newOptions.headers = {
+//       Accept: 'application/json',
+//       ...newOptions.headers,
+//     };
+//     if (newOptions.body instanceof FormData) {
+//       // newOptions.headers['Content-Type'] = 'multipart/form-data';
+//     } else {
+//       newOptions.headers['Content-Type'] = 'application/json; charset=utf-8';
+//       if (newOptions.body && newOptions.body.exportArgs) {
+//         newOptions.query = {
+//           ...newOptions.query,
+//           ...newOptions.body.exportArgs,
+//         };
+//         delete newOptions.body.exportArgs;
+//         isExportFile = true;
+//       }
+//       newOptions.body = JSON.stringify(newOptions.body);
+//     }
+//   } else if (newOptions.method === undefined || newOptions.method.toLowerCase() === 'get') {
+//     newUrl = generateUrlWithGetParam(url, newOptions.body);
+//     newOptions.method = 'GET';
+//     delete newOptions.body;
+//   }
+//   if (newOptions.query) {
+//     newUrl = generateUrlWithGetParam(newUrl, newOptions.query);
+//   }
+//   if (!newOptions.headers) {
+//     newOptions.headers = {};
+//   }
+//   if (!newOptions.headers.Authorization && getAuthorization()) {
+//     newOptions.headers.Authorization = getAuthorization();
+//   }
+
+//   /* #preview-delete#
+//   const { mockApiKeys, mockRequest } = require('./mockRequest');
+//   const [newUrlp, search] = url.split('?');
+//   if (mockApiKeys.indexOf(`${newOptions.method} ${newUrlp}`) >= 0) {
+//     return mockRequest(url, { ...newOptions, body: { ...options.body, ...querystring.parse(search) } });
+//   }
+//   #preview-delete# */
+
+//   if (isExportFile) {
+//     if (newOptions.method !== 'GET') {
+//       newOptions.body = querystring.stringify({
+//         body: newOptions.body,
+//       });
+//     }
+//     newOptions.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+//   }
+
+//   return fetch(newUrl, newOptions)
+//     .then(checkStatus)
+//     .then((response) => {
+//       if (isExportFile) {
+//         return response.blob();
+//       } else {
+//         return response.text();
+//       }
+//     })
+//     .then((text) => {
+//       if (isExportFile) {
+//         return text;
+//       }
+//       if (text && text.trim()) {
+//         let ret = text;
+//         if (!isGetText) {
+//           try {
+//             ret = JSON.parse(text);
+//           } catch (e) {
+//             // console.error(e);
+//           }
+//         }
+//         return ret;
+//       } else {
+//         return {
+//           data: [],
+//           success: false,
+//         };
+//       }
+//     })
+//     .catch((error) => {
+//       if (error.code) {
+//         notification.error({
+//           message: error.name,
+//           description: error.message,
+//         });
+//       }
+//       if ('stack' in error && 'message' in error) {
+//         if (`${error.response && error.response.status}` !== '401') {
+//           notification.error({
+//             message: `请求错误: ${error.response && error.response.status} ${url}`,
+//             description: error.message,
+//           });
+//         }
+//       }
+//       return Promise.reject(error);
+//     });
+// }

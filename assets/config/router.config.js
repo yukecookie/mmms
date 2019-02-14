@@ -48,62 +48,6 @@ export default [
           },
         ],
       },
-      // 会员卡管理
-      {
-        path: '/card',
-        icon: 'form',
-        name: 'card',
-        routes: [
-          {
-            path: '/card/basic-form',
-            name: 'replace',
-            component: './Forms/BasicForm',
-          },
-          {
-            path: '/card/step-form',
-            name: 'charge',
-            component: './Forms/StepForm',
-            // hideChildrenInMenu: true,
-            // routes: [
-            //   {
-            //     path: '/card/step-form',
-            //     redirect: '/form/step-form/info',
-            //   },
-            //   {
-            //     path: '/form/step-form/info',
-            //     name: 'info',
-            //     component: './Forms/StepForm/Step1',
-            //   },
-            //   {
-            //     path: '/form/step-form/confirm',
-            //     name: 'confirm',
-            //     component: './Forms/StepForm/Step2',
-            //   },
-            //   {
-            //     path: '/form/step-form/result',
-            //     name: 'result',
-            //     component: './Forms/StepForm/Step3',
-            //   },
-            // ],
-          },
-          {
-            path: '/card/basic-form',
-            name: 'lost',
-            component: './Forms/BasicForm',
-          },
-          {
-            path: '/card/step-form',
-            name: 'lock',
-            component: './Forms/StepForm',
-          },
-          // {
-          //   path: '/form/advanced-form',
-          //   name: 'advancedform',
-          //   authority: ['admin'],
-          //   component: './Forms/AdvancedForm',
-          // },
-        ],
-      },
       // list
       {
         path: '/list',
@@ -157,7 +101,7 @@ export default [
       {
         path: '/card',
         name: 'card',
-        icon: 'profile',
+        icon: 'credit-card',
         routes: [
           {
             path: '/card/replace',
@@ -186,7 +130,7 @@ export default [
       // 会员消费管理
       {
         name: 'consumption',
-        icon: 'check-circle-o',
+        icon: 'money-collect',
         path: '/consumption',
         routes: [
           {
@@ -204,7 +148,7 @@ export default [
       // 积分兑换管理
       {
         name: 'score',
-        icon: 'warning',
+        icon: 'inbox',
         path: '/score',
         routes: [
           {
@@ -233,7 +177,7 @@ export default [
       // 短信管理
       {
         name: 'message',
-        icon: 'user',
+        icon: 'message',
         path: '/message',
         routes: [
           {
@@ -271,7 +215,7 @@ export default [
       // 个人中心
       {
         name: 'personal',
-        icon: 'check-circle-o',
+        icon: 'user',
         path: '/personal',
         authority: ['user'],
         routes: [
