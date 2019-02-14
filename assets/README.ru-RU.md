@@ -80,7 +80,7 @@ UI-решение "из коробки" для корпоративных при
 $ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
 $ cd ant-design-pro
 $ npm install
-$ npm start         # visit http://localhost:8000
+$ npm start         # visit http://localhost:8008
 ```
 
 Больше информации в [документации](http://pro.ant.design/docs/getting-started).

@@ -37,13 +37,6 @@ const plugins = [
             hardSource: false,
           }
         : {}),
-      proxy: {
-        '/server/api/': {
-          target: 'http://localhost:8090/',
-          changeOrigin: true,
-          pathRewrite: { '^/server': '' }, // /server/api/currentUser -> /api/currentUser
-        },
-      },
     },
   ],
 ];
@@ -79,13 +72,13 @@ export default {
   externals: {
     '@antv/data-set': 'DataSet',
   },
-  // proxy: {
-  //   '/server/api/': {
-  //     target: 'http://localhost:8090/',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/server': '' }, // /server/api/currentUser -> /api/currentUser
-  //   },
-  // },
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8090/',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' }, // /server/api/currentUser -> /api/currentUser
+    },
+  },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,

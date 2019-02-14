@@ -5,10 +5,10 @@ const pool = require("./pool");
 //问：怎么改成application/json
 
 // 登录
-router.post("/server/api/login/account", (req, res) => {
-  console.log(req);
+router.post("/login/account", (req, res) => {
   const username = req.body.userName;
   const password = req.body.password;
+  const type = req.body.type;
   (async function() {
     await new Promise(function(open) {
       const sql = "select * from user_info where username=? and password=?";
@@ -20,7 +20,6 @@ router.post("/server/api/login/account", (req, res) => {
         // "Access-Control-Allow-Origin": "*"
         // });
         if (result.length > 0) {
-          console.log(123);
           //如果用户存在，将用户的id保存在session中
           req.session.username = result[0].username;
           if(username === 'admin') {
@@ -45,8 +44,11 @@ router.post("/server/api/login/account", (req, res) => {
           // );
         } else {
           result = {
-            failed: true,
-            message: "登录失败"
+            // failed: true,
+            // message: "登录失败",
+            status: 'error',
+            type,
+            currentAuthority: 'guest',
           };
           // res.write(
           //   JSON.stringify({

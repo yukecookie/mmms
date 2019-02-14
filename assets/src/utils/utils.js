@@ -2,7 +2,6 @@ import moment from 'moment';
 import React from 'react';
 import nzh from 'nzh/cn';
 import { parse, stringify } from 'qs';
-import qs from 'querystring';
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -182,26 +181,3 @@ export function formatWan(val) {
 export function isAntdPro() {
   return window.location.hostname === 'preview.pro.ant.design';
 }
-
-/**
- * 生成带Get参数的URL
- * @param url
- * @param param
- */
-export function generateUrlWithGetParam(url, params) {
-  let newUrl = url;
-  if (params && Object.keys(params).length >= 1) {
-    const newParams = params; // filterNullValueObject
-    if (Object.keys(newParams).length >= 1) {
-      newUrl += `${url.indexOf('?') >= 0 ? '&' : '?'}${qs.stringify(
-        JSON.parse(JSON.stringify(newParams))
-      )}`;
-    }
-  }
-  return newUrl;
-}
-
-export const delay = timeout =>
-  new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });

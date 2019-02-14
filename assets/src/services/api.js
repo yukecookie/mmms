@@ -104,13 +104,11 @@ export async function updateFakeList(params) {
 }
 
 export async function fakeAccountLogin(params) {
-  return request('http://localhost:8090/users/server/api/login/account', {
+  return request('/api/users/login/account', {
+    // http://localhost:8090/users/login/account
     method: 'POST',
     body: params,
   });
-  // return request('http://localhost:8090/a', {
-  //   method: 'GET',
-  // });
 }
 
 export async function fakeRegister(params) {

@@ -83,7 +83,7 @@ $ npm start
 
 项目启动成功后,在浏览器访问如下地址即可
 ```
-http://localhost:8000/
+http://localhost:8008/
 ```
 
 #### 项目说明

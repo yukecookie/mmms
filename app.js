@@ -10,12 +10,22 @@ const swig=require("swig")
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const app = express();
-app.use(cors({
-  origin:'http://localhost:8001',
-  methods:['GET','POST'],
-  allowedHeaders:['Content-Type', 'Authorization'],
-  // credentials:true
-}));
+app.all('*', function (req, res, next) {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:8008");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+  res.header("X-Powered-By", ' 3.2.1')
+  res.header("Content-Type", "application/json;charset=utf-8");
+  next();
+});
+// app.use(cors({
+//   origin:'http://localhost:8001',
+//   methods:['GET','POST'],
+//   allowedHeaders:['Content-Type', 'Authorization'],
+//   // credentials:true
+// }));
 const bodyParse=require("body-parser")
 //引入session
 const session=require('express-session')

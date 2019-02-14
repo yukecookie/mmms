@@ -10,7 +10,7 @@ const FooterView = () => (
         {
           key: '首页',
           title: '首页',
-          href: 'http://localhost:8000',
+          href: 'http://localhost:8008',
           blankTarget: true,
         },
         {
