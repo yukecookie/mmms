@@ -30,11 +30,12 @@ export default [
         path: '/info',
         icon: 'form',
         name: 'info',
+        authority: ['admin'],
         routes: [
           {
             path: '/info/add-user',
             name: 'add',
-            component: './UserInfo',
+            component: './UserInfo/UserInfoAdd',
           },
           {
             path: '/info/update-user',
@@ -102,28 +103,27 @@ export default [
         path: '/card',
         name: 'card',
         icon: 'credit-card',
+        authority: ['admin'],
         routes: [
           {
             path: '/card/replace',
             name: 'replace',
-            component: './Profile/BasicProfile',
+            component: './UserCard/CardReplace',
           },
           {
             path: '/card/charge',
             name: 'charge',
-            authority: ['admin'],
-            component: './Profile/AdvancedProfile',
+            component: './UserCard/CardCharge',
           },
           {
             path: '/card/lost',
             name: 'lost',
-            component: './Profile/BasicProfile',
+            component: './UserCard/CardLost',
           },
           {
             path: '/card/lock',
             name: 'lock',
-            authority: ['admin'],
-            component: './Profile/AdvancedProfile',
+            component: './UserCard/CardLock',
           },
         ],
       },
@@ -132,6 +132,7 @@ export default [
         name: 'consumption',
         icon: 'money-collect',
         path: '/consumption',
+        authority: ['admin'],
         routes: [
           {
             path: '/consumption/add',
@@ -150,6 +151,7 @@ export default [
         name: 'score',
         icon: 'inbox',
         path: '/score',
+        authority: ['admin'],
         routes: [
           {
             path: '/score/birth',
@@ -179,6 +181,7 @@ export default [
         name: 'message',
         icon: 'message',
         path: '/message',
+        authority: ['admin'],
         routes: [
           {
             path: '/message/activation',
@@ -222,13 +225,11 @@ export default [
           {
             path: '/personal/info-update',
             name: 'info-update',
-            authority: ['user'],
             component: './Result/Success',
           },
           {
             path: '/personal/gift',
             name: 'gift',
-            authority: ['user'],
             component: './Result/Error',
           },
         ],

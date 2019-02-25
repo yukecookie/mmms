@@ -202,4 +202,39 @@ router.post("/getBlogs", (req, res) => {
   })();
 });
 
+// 读取博客
+router.post("/currentUser", (req, res) => {
+  (async function() {
+    await new Promise(function(open) {
+      const sql = "SELECT * FROM user_info WHERE id=?";
+      pool.query(sql, [req.session.username], (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+          // console.log(result);
+        } else {
+          result = {
+            empty: true,
+            message: "no blog"
+          };
+        }
+        open();
+        res.send(result);
+      });
+    });
+  })();
+});
+
+router.get("/currentUser", (req, res) => {
+  (async function() {
+    await new Promise(function(open) {
+      var sql = "SELECT * FROM user_info WHERE username=?";
+      pool.query(sql, [req.session.username], (err, result) => {
+        if (err) throw err;
+        open();
+        res.send(result[0]);
+      });
+    });
+  })();
+});
+
 module.exports = router;
