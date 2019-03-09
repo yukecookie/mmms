@@ -56,7 +56,7 @@ class CardReplace extends PureComponent {
       >
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="form.old-card.label" />}>
+            <FormItem {...formItemLayout} label={<FormattedMessage id="form.card.old.label" />}>
               {getFieldDecorator('title', {
                 rules: [
                   {
@@ -66,7 +66,7 @@ class CardReplace extends PureComponent {
                 ],
               })(<Input placeholder={formatMessage({ id: 'form.card.placeholder' })} />)}
             </FormItem>
-            <FormItem {...formItemLayout} label={<FormattedMessage id="form.new-card.label" />}>
+            <FormItem {...formItemLayout} label={<FormattedMessage id="form.card.new.label" />}>
               {getFieldDecorator('title', {
                 rules: [
                   {

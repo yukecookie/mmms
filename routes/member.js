@@ -8,3 +8,5 @@ const pool = require("./pool");
 router.post("/vip/info", (req, res) => {
 
 });
+
+module.exports = router;

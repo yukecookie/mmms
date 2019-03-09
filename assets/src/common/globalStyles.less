@@ -1,0 +1,204 @@
+// @import "../utils/utils.less";  // 为什么这样写会去找 node_modules 里面的utils.utils.less
+
+/**
+ * author:  learnwy, Yang.Wang, 汪洋
+ * time: 2018-02-07
+ * feature: globalStyles
+ * email: learnwy@gamil.com,yang.wang06@hand-china.com
+ */
+.textOverflow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+}
+
+.textOverflowMulti(@line: 3, @bg: #fff) {
+  overflow: hidden;
+  position: relative;
+  line-height: 1.5em;
+  max-height: @line * 1.5em;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1em;
+  &:before {
+    background: @bg;
+    content: '...';
+    padding: 0 1px;
+    position: absolute;
+    right: 14px;
+    bottom: 0;
+  }
+  &:after {
+    background: white;
+    content: '';
+    margin-top: 0.2em;
+    position: absolute;
+    right: 14px;
+    width: 1em;
+    height: 1em;
+  }
+}
+
+// mixins for clearfix
+// ------------------------
+.clearfix() {
+  zoom: 1;
+  &:before,
+  &:after {
+    content: ' ';
+    display: table;
+  }
+  &:after {
+    clear: both;
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+  }
+}
+
+/* 按钮样式 */
+.operator,
+:global(.ant-card-extra) {
+  //margin: -4px -12px 16px -12px;
+  //padding: 16px;
+  background: white;
+  // padding-bottom: 8px;
+  :global(.ant-btn) {
+    margin-right: 8px;
+  }
+  :global(.ant-badge) {
+    margin-right: 8px;
+    margin-top: 4px;
+  }
+  :global {
+    .ant-badge {
+      button {
+        margin-top: 0;
+      }
+    }
+  }
+  button {
+    padding: 0 8px;
+    min-width: 76px;
+    height: 30px;
+    margin-top: 8px;
+    text-align: center;
+    color: #314659;
+    border: 1px solid #9f9f9f;
+    box-shadow: 2px 2px 2px #9f9f9f !important;
+    &:not([disabled]) {
+      span,
+      a {
+        color: #fff;
+        font-size: 13px;
+        line-height: 30px;
+      }
+      border: none;
+      &.green {
+        background: rgb(92, 184, 92);
+      }
+      &.purple {
+        background: rgb(153, 51, 204);
+      }
+      &.red {
+        background: red;
+      }
+      &.deepRed {
+        background: rgb(217, 83, 79);
+      }
+      &.blue {
+        background: rgb(51, 122, 183);
+      }
+    }
+  }
+}
+
+/* 搜索框样式 */
+.filter {
+  margin-top: 10px;
+}
+
+.setting {
+  // 批量设置区域
+}
+
+/* 整体 内容 区域 */
+.content {
+  /* 每个 区域 */
+  .section {
+    margin-top: 10px;
+  }
+  .operator {
+    margin: -4px -12px 16px -12px;
+    padding: 16px;
+    background: white;
+    > :global(.ant-btn) {
+      margin-right: 8px;
+    }
+  }
+  .ellipsis {
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+}
+
+/* 单个 的 区域 */
+.section {
+  margin-top: 20px;
+}
+
+/* 数据 区域 */
+.table {
+  margin-top: 10px;
+  :global {
+    .ant-table-tbody > tr > td {
+      padding: 8px;
+    }
+    .ant-form-inline .ant-form-item-with-help {
+      margin-bottom: 0;
+    }
+  }
+}
+:global {
+  .ant-input-group-wrapper {
+    vertical-align: middle;
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  button.noAuth {
+    //color: rgba(0, 0, 0, 0.25);
+    //background-color: #f5f5f5;
+    //border-color: #d9d9d9;
+    position: relative;
+
+    &::after {
+      content: '\65E0\6743\9650';
+      text-align: center;
+      text-indent: -19px;
+      color: #f0f;
+      font-size: 6px;
+      text-shadow: 0 -35px 0.5px #e4ff00;
+      display: inline-block;
+      border-radius: 4px;
+      position: absolute;
+      transform: translateX(26px) rotate(-45deg) scale(0.5);
+      transform-origin: right bottom;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border: 37px solid transparent;
+      border-top-color: #403f3fa3;
+      overflow: visible;
+    }
+  }
+  .overHideText3 {
+    display: inline-block;
+    .textOverflowMulti();
+  }
+}

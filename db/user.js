@@ -14,7 +14,7 @@ let addUser = (params) => {
       if(err) {
         return reject(err);
       }
-      const sql = 'insert into user_info(username, password,mobile,name,sex,email,qq) values(?, ?,?,?,?,?,?)';
+      const sql = 'insert into user_info(user_name, password,mobile,name,sex,email,qq) values(?, ?,?,?,?,?,?)';
       cnt.query(sql, params, (error, res) => {
         cnt.release();
         if(error) {
@@ -31,7 +31,7 @@ let findUser = (params) => {
       if(err) {
         return reject(err);
       } 
-      let sql = 'select * from user_info where username = ?';
+      let sql = 'select * from user_info where user_name = ?';
       if(params.length > 1) {
         sql += ' and password = ?';
       }

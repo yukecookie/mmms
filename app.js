@@ -9,6 +9,8 @@ const logger = require('morgan');
 const swig=require("swig")
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const consumptionRouter = require('./routes/consumption');
+
 const app = express();
 app.all('*', function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
@@ -59,6 +61,8 @@ app.use(express.static(path.join(__dirname, './assets/build')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/consumption', consumptionRouter);
+
 app.use((req,res)=>{
   res.setHeader("Access-Control-Allow-Origin", "*");
 })

@@ -591,10 +591,10 @@ class UserInfoAdd extends PureComponent {
   }
 
   render() {
-    const {
-      rule: { data },
-      loading,
-    } = this.props;
+    // const {
+    //   rule: { data = [] },
+    //   loading,
+    // } = this.props;
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
@@ -633,8 +633,7 @@ class UserInfoAdd extends PureComponent {
             </div>
             <StandardTable
               selectedRows={selectedRows}
-              loading={loading}
-              data={data}
+              data={[]}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}

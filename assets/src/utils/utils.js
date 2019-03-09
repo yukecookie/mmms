@@ -1,7 +1,10 @@
 import moment from 'moment';
 import React from 'react';
+import lodash from 'lodash';
 import nzh from 'nzh/cn';
 import { parse, stringify } from 'qs';
+
+/* eslint-disable no-else-return */
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -180,4 +183,177 @@ export function formatWan(val) {
 // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 export function isAntdPro() {
   return window.location.hostname === 'preview.pro.ant.design';
+}
+
+/**
+ * @description 获取页面 滚动的 容器
+ * // todo 当 select 多选模式 点击删除时(初始,而不是选择之后的删除), window.contentScrollContainer 为空
+ */
+export function getContentScrollContainer() {
+  return window.contentScrollContainer || document.body;
+}
+
+// 用于 getAddressCascaderValueFromLowestAddressCode
+const addressCodeReg = /([A-Z]{2})(-\d+)?(-\d+)?(-\d+)?/;
+// 用于 getAddressCascaderValueFromLowestAddressCode
+const addressCodeReg2 = /C?(\d\d)(\d\d)(\d\d)/;
+
+/**
+ * @description 通过最低级的 code 获取 [region,city,district]
+ * @param lowestAddressCode  XX-dd1-XXdd1-dd2-XX-dd1-dd2-dd3
+ * @returns [dd1,dd2,dd3]
+ */
+export function getAddressCascaderValueFromLowestAddressCode(lowestAddressCode = 'CN') {
+  const result = lowestAddressCode.match(addressCodeReg);
+  if (result) {
+    if (result[4]) {
+      return [
+        `${result[1]}${result[2]}`,
+        `${result[1]}${result[2]}${result[3]}`,
+        `${result[1]}${result[2]}${result[3]}${result[4]}`,
+      ];
+    } else if (result[3]) {
+      return [`${result[1]}${result[2]}`, `${result[1]}${result[2]}${result[3]}`];
+    } else if (result[2]) {
+      return [`${result[1]}${result[2]}`];
+    }
+  }
+  const result2 = lowestAddressCode.match(addressCodeReg2);
+  if (result2) {
+    const [, d, c, r] = result2;
+    const isC = lowestAddressCode.startsWith('C') ? 'C' : '';
+    if (r && r !== '00') {
+      return [`${d}0000`, `${isC}${d}${c}00`, `${d}${c}${r}`];
+    }
+    if (c && c !== '00') {
+      return [`${d}0000`, `${isC}${d}${c}00`];
+    }
+    if (d && d !== '00') {
+      return [`${d}0000`];
+    }
+  }
+  return [undefined, undefined, undefined];
+}
+
+/**
+ * @param {any} selectedRows 当前页选中的所有行(Item)
+ * @param {any} dataSourceMap 所有选中行(Map: {rowKey: Item})
+ * @param {any} rowKey 数据列表行唯一标识(rowKey)
+ * @param {any} selectedRowKeys 所有选中行的标识(List: rowKey)
+ * @param {any} newSelectedRowKeys 变更后选中数据行的标识(List: rowKey)
+ * @returns  更新后所有选中行(Map: {rowKey: Item})
+ */
+export function getNewDataMap(
+  selectedRows,
+  dataSourceMap = {},
+  rowKey,
+  selectedRowKeys,
+  newSelectedRowKeys
+) {
+  let newRowKey = rowKey;
+  if (lodash.isString(rowKey)) {
+    newRowKey = record => record[rowKey];
+  }
+  const newDataSourceMap = { ...dataSourceMap };
+  if (selectedRowKeys.length < newSelectedRowKeys.length) {
+    // 选中操作
+    const dif = newSelectedRowKeys.filter(item => selectedRowKeys.indexOf(item) < 0);
+    dif.forEach(itemKey => {
+      newDataSourceMap[itemKey] = selectedRows.find(item => newRowKey(item) === itemKey);
+    });
+  } else if (selectedRowKeys.length > newSelectedRowKeys.length) {
+    // 取消操作
+    const dif = selectedRowKeys.filter(item => newSelectedRowKeys.indexOf(item) < 0);
+    dif.forEach(item => {
+      delete newDataSourceMap[item];
+    });
+  }
+  return newDataSourceMap;
+}
+
+/**
+ * 过滤掉对象值为 undefined 和 空字符串 和 空数组 的属性
+ * @param obj
+ * @returns {*}
+ */
+export function filterNullValueObject(obj) {
+  const result = {};
+  if (obj && Object.keys(obj).length >= 1) {
+    Object.keys(obj).forEach(key => {
+      if (key && obj[key] !== undefined && obj[key] !== '') {
+        // 如果查询的条件不为空
+        if (lodash.isArray(obj[key]) && obj[key].length === 0) {
+          return;
+        }
+        result[key] = obj[key];
+      }
+    });
+  }
+  return result; // 返回查询条件
+}
+
+/**
+ * 处理请求参数， Moment 对象转换成请求参数
+ * @param obj
+ * @returns {*}
+ */
+export function handleQueryMoment(obj, format = handleQueryMoment.format.datetime) {
+  return lodash.mapValues(obj, v => {
+    if (moment.isMoment(v)) {
+      if (format === handleQueryMoment.format.timestamp) {
+        return +v;
+      }
+      return v.format(format);
+    }
+    return v;
+  });
+}
+
+handleQueryMoment.format = {};
+handleQueryMoment.format.date = 'YYYY-MM-DD';
+handleQueryMoment.format.time = 'HH:mm:ss';
+handleQueryMoment.format.datetime = 'YYYY-MM-DD HH:mm:ss';
+handleQueryMoment.format.timestamp = 'timestamp';
+handleQueryMoment.time = {
+  min: moment('00:00:00', handleQueryMoment.format.time),
+  max: moment('23:59:59', handleQueryMoment.format.time),
+  current: moment(),
+};
+handleQueryMoment.timeStr = {
+  min: '00:00:00',
+  max: '23:59:59',
+  current: () => moment().format(handleQueryMoment.format.datetime),
+};
+
+/**
+ * 根据下划线拆分请求参数，以两个下划线分隔,把 value 对应的数组分给拆分的key
+ * 例如{ "k1__k2__k3": ['v1','v2','v3'] } => { k1: 'v1', k2: 'v2', k3: 'v3' }
+ *      { "k1__k2": ['v1','v2','v3'] } => { k1: 'v1', k2: 'v2' }
+ *      { "k1__k2_k3": ['v1','v2'] } => { k1: 'v1', k2: 'v2' }
+ * @param obj
+ * @returns {{}}
+ */
+export function handleQueryMulti(obj) {
+  const result = {};
+  if (obj && Object.keys(obj).length >= 1) {
+    Object.keys(obj).forEach(key => {
+      if (key.indexOf('__') >= 0) {
+        const newKeys = key.split('__');
+        const values = obj[key];
+        // 默认是数组或者空
+        if (values) {
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i < newKeys.length; i++) {
+            if (values[i] === null || values[i] === undefined) {
+              break;
+            }
+            result[newKeys[i]] = values[i];
+          }
+        }
+      } else {
+        result[key] = obj[key];
+      }
+    });
+  }
+  return result; // 返回查询条件
 }

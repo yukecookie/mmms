@@ -6,13 +6,13 @@ const pool = require("./pool");
 
 // 登录
 router.post("/login/account", (req, res) => {
-  const username = req.body.userName;
+  const userName = req.body.userName;
   const password = req.body.password;
   const type = req.body.type;
   (async function() {
     await new Promise(function(open) {
-      const sql = "select * from user_info where username=? and password=?";
-      pool.query(sql, [username, password], (err, result) => {
+      const sql = "select * from user_info where user_name=? and password=?";
+      pool.query(sql, [userName, password], (err, result) => {
         if (err) throw err;
         //设置响应头解决跨域
         // res.writeHead(200, {
@@ -21,8 +21,8 @@ router.post("/login/account", (req, res) => {
         // });
         if (result.length > 0) {
           //如果用户存在，将用户的id保存在session中
-          req.session.username = result[0].username;
-          if(username === 'admin') {
+          req.session.userName = result[0].user_name;
+          if(userName === 'admin') {
             result = {
               status: 'ok',
               type,
@@ -71,10 +71,10 @@ router.post("/login/account", (req, res) => {
 router.post("/isLogin", (req, res) => {
   (async function() {
     await new Promise(function(open) {
-      const sql = "select * from user_info where username=?";
+      const sql = "select * from user_info where user_name=?";
       pool.query(
         sql,
-        [req.session.username === undefined ? "" : req.session.username],
+        [req.session.userName === undefined ? "" : req.session.userName],
         (err, result) => {
           if (err) throw err;
           //如果没登录
@@ -98,8 +98,8 @@ router.post("/isLogin", (req, res) => {
 router.post("/loginOut", (req, res) => {
   // res.writeHead(200);
   //将session中存储的用户id清空
-  req.session.username = undefined;
-  if (req.session.username === undefined) {
+  req.session.userName = undefined;
+  if (req.session.userName === undefined) {
     res.send("1");
   } else {
     res.send("注销失败");
@@ -113,7 +113,7 @@ router.post("/register", (req, res) => {
   pool.query(
     sql,
     [
-      obj.username,
+      obj.userName,
       obj.password,
       obj.mobile,
       obj.name,
@@ -142,8 +142,8 @@ router.post("/register", (req, res) => {
 //验证用户名是否存在
 router.post("/checkName", (req, res) => {
   check(
-    "select * from user_info where username=?",
-    req.body.username,
+    "select * from user_info where user_name=?",
+    req.body.userName,
     "用户名",
     res
   );
@@ -184,8 +184,8 @@ router.post("/sentCode", (req, res) => {
 router.post("/getBlogs", (req, res) => {
   (async function() {
     await new Promise(function(open) {
-      const sql = "select * from user_blog where username=?";
-      pool.query(sql, [req.body.username], (err, result) => {
+      const sql = "select * from user_blog where user_name=?";
+      pool.query(sql, [req.body.userName], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
           // console.log(result);
@@ -203,11 +203,11 @@ router.post("/getBlogs", (req, res) => {
 });
 
 // 读取博客
-router.post("/currentUser", (req, res) => {
+router.post("/currentUser1", (req, res) => {
   (async function() {
     await new Promise(function(open) {
       const sql = "SELECT * FROM user_info WHERE id=?";
-      pool.query(sql, [req.session.username], (err, result) => {
+      pool.query(sql, [req.session.userName], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
           // console.log(result);
@@ -227,11 +227,27 @@ router.post("/currentUser", (req, res) => {
 router.get("/currentUser", (req, res) => {
   (async function() {
     await new Promise(function(open) {
-      var sql = "SELECT * FROM user_info WHERE username=?";
-      pool.query(sql, [req.session.username], (err, result) => {
+      var sql = "SELECT * FROM user_info WHERE user_name=?";
+      pool.query(sql, [req.session.userName], (err, result) => {
         if (err) throw err;
         open();
         res.send(result[0]);
+      });
+    });
+  })();
+});
+
+router.get("/allUsers", (req, res) => {
+  (async function() {
+    await new Promise(function(open) {
+      var sql = "SELECT card_num FROM user_info";
+      pool.query(sql, [req.session.userName], (err, result) => {
+        if (err) throw err;
+        open();
+        res.json({
+          data: result.map(item => item.card_num),
+          msg: 'success'
+        });
       });
     });
   })();

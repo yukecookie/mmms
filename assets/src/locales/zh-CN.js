@@ -29,6 +29,30 @@ export default {
   'app.forms.lock.title': '会员卡锁定',
   'app.forms.lock.description':
     '当会员发生了影响商场正常经营活动的行为时，商场可以禁止该会员卡的使用。',
+  'app.forms.addInfo.title': '添加消费信息',
+  'app.forms.addInfo.description': '添加消费信息以计算用户类型',
+  // '': '',
+
+  'app.list.message_hasChoosePart1': '已选择', // list
+  'app.list.message_hasChoosePart2': '项',
+  'app.list.btn_clear': '清空',
+
+  'app.filter.text_pleaseChoose': '请输入', // filter
+  'app.filter.select_pleaseChoose': '请选择',
+  'app.filter.message_noData': '没有相应的数据',
+  'app.filter.text_startDate': '开始日期',
+  'app.filter.text_endDate': '结束日期',
+  'app.filter.btn_search': '查询',
+  'app.filter.btn_reset': '重置',
+  'app.filter.radioButtonTimeRange.text_timeSpan1': '10天',
+  'app.filter.radioButtonTimeRange.text_timeSpan2': '1个月',
+  'app.filter.radioButtonTimeRange.text_timeSpan3': '3个月',
+  'app.site.tableShowTotal': '共 {total} 条记录  当前第 {rangeStart} - {rangeEnd} 条',
+  'app.site.yes': '是',
+  'app.site.no': '否',
+
+  'app.list.title': '保存', //
+  'app.list.submit': '提交', //
   ...analysis,
   ...exception,
   ...form,

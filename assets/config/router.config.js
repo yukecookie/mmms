@@ -137,7 +137,7 @@ export default [
           {
             path: '/consumption/add',
             name: 'add',
-            component: './Result/Success',
+            component: './Consumption/ConsumptionList',
           },
           {
             path: '/consumption/refund',
