@@ -49,55 +49,6 @@ export default [
           },
         ],
       },
-      // list
-      {
-        path: '/list',
-        icon: 'table',
-        name: 'list',
-        routes: [
-          {
-            path: '/list/table-list',
-            name: 'searchtable',
-            component: './List/TableList',
-          },
-          {
-            path: '/list/basic-list',
-            name: 'basiclist',
-            component: './List/BasicList',
-          },
-          {
-            path: '/list/card-list',
-            name: 'cardlist',
-            component: './List/CardList',
-          },
-          {
-            path: '/list/search',
-            name: 'searchlist',
-            component: './List/List',
-            routes: [
-              {
-                path: '/list/search',
-                redirect: '/list/search/articles',
-              },
-              {
-                path: '/list/search/articles',
-                name: 'articles',
-                component: './List/Articles',
-              },
-              {
-                path: '/list/search/projects',
-                name: 'projects',
-                component: './List/Projects',
-              },
-              {
-                path: '/list/search/applications',
-                name: 'applications',
-                component: './List/Applications',
-              },
-            ],
-          },
-        ],
-      },
       // 会员卡管理
       {
         path: '/card',
@@ -142,7 +93,7 @@ export default [
           {
             path: '/consumption/refund',
             name: 'refund',
-            component: './Result/Error',
+            component: './Consumption/ConsumptionRefund',
           },
         ],
       },
@@ -154,20 +105,32 @@ export default [
         authority: ['admin'],
         routes: [
           {
-            path: '/score/birth',
-            name: 'birth',
-            component: './Exception/403',
+            path: '/score/give',
+            name: 'give',
+            // component: './Result/Success',
+            routes: [
+              {
+                path: '/score/give/consumption',
+                name: 'consumption',
+                component: './Score/Give/consumption',
+              },
+              {
+                path: '/score/give/birth',
+                name: 'birth',
+                component: './Score/Give/birth',
+              },
+            ],
           },
           {
             path: '/score/consumption',
             name: 'consumption',
             component: './Exception/404',
           },
-          {
-            path: '/score/gift-exchange',
-            name: 'gift-exchange',
-            component: './Exception/500',
-          },
+          // {
+          //   path: '/score/gift-exchange',
+          //   name: 'gift-exchange',
+          //   component: './Exception/500',
+          // },
           {
             path: '/score/gift-manage',
             name: 'gift-manage',

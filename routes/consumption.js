@@ -51,7 +51,12 @@ router.post("/queryTag", (req, res) => {
         const sqlR="select datediff(now(), orderCreationDate) as day from consumptionInfo where cardNum=? order by orderCreationDate desc limit 1";
         pool.query(sqlR, [cardNum], (err, result) => {
           if (err) throw err;
-          value.push(result[0].day);
+          if(result[0].day>30) {
+              value.push(0);
+          } else {
+              value.push(1);
+          }
+        //   value.push(result[0].day);
           open();
         }); // R: 计算每个用户最近一次的消费时间距离今天是多少天
       });
@@ -59,7 +64,12 @@ router.post("/queryTag", (req, res) => {
         const sqlF="select count(*) as count from consumptionInfo where cardNum=?";
         pool.query(sqlF, [cardNum], (err, result) => {
           if (err) throw err;
-          value.push(result[0].count);
+          if(result[0].count<3) {
+            value.push(0);
+          } else {
+            value.push(1);
+          }
+        //   value.push(result[0].count);
           open();
         }); // F: 计算该用户近三个月消费过多少次
       });
@@ -67,7 +77,12 @@ router.post("/queryTag", (req, res) => {
         const sqlM="select sum(amount) as totalMoney from consumptionInfo where cardNum=?";
         pool.query(sqlM, [cardNum], (err, result) => {
           if (err) throw err;
-          value.push(result[0].totalMoney);
+          if(result[0].totalMoney<200) {
+            value.push(0);
+          } else {
+            value.push(1);
+          }
+        //   value.push(result[0].totalMoney);
           data.push(value);
           open();
         }); // M: 计算该用户近三个月消费总金额
@@ -79,12 +94,8 @@ router.post("/queryTag", (req, res) => {
             const result = ml.kmeans.cluster({
               data: data,
               k: 8,
-              epochs: 85,
+              epochs: 20,
               distance: { type: 'euclidean' }
-              // default : { type: 'euclidean' }
-              // {type : 'pearson'}
-              // Or you can use your own distance function
-              // distance : function(vecx, vecy) {return Math.abs(dot(vecx,vecy));}
             });
             console.log(result);
             res.send(result.means);

@@ -1,6 +1,7 @@
-import moment from 'moment';
 import React from 'react';
+import { routerRedux } from 'dva/router';
 import lodash from 'lodash';
+import moment from 'moment';
 import nzh from 'nzh/cn';
 import { parse, stringify } from 'qs';
 
@@ -356,4 +357,18 @@ export function handleQueryMulti(obj) {
     });
   }
   return result; // 返回查询条件
+}
+
+/**
+ * @description 跳转到某个页面
+ * @param pathname
+ * @param search
+ */
+export function goToPage(pathname = '/', search = '') {
+  let searchParse = search;
+  if (search.length > 0 && !lodash.startsWith(search, '?')) {
+    searchParse = `?${search}`;
+  }
+  // eslint-disable-next-line no-underscore-dangle
+  window.g_app._store.dispatch(routerRedux.push(pathname + searchParse));
 }

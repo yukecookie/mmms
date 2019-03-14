@@ -31,6 +31,8 @@ export default {
     '当会员发生了影响商场正常经营活动的行为时，商场可以禁止该会员卡的使用。',
   'app.forms.addInfo.title': '添加消费信息',
   'app.forms.addInfo.description': '添加消费信息以计算用户类型',
+  'app.forms.refund.title': '消费退款',
+  'app.forms.refund.description': '确保退款商品不影响干净销售',
   // '': '',
 
   'app.list.message_hasChoosePart1': '已选择', // list

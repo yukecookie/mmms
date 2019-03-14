@@ -231,7 +231,12 @@ router.get("/currentUser", (req, res) => {
       pool.query(sql, [req.session.userName], (err, result) => {
         if (err) throw err;
         open();
-        res.send(result[0]);
+        if (result.length > 0) {
+          res.send(result[0]);
+        } else {
+          res.send({success: false});
+        }
+
       });
     });
   })();

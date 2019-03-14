@@ -24,6 +24,10 @@ class Center extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
+    }).then(res => {
+      if (res.err) {
+        // gotopage
+      }
     });
     dispatch({
       type: 'list/fetch',

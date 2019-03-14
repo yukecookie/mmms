@@ -31,13 +31,6 @@ class ConsumptionList extends BasePageComponent {
     });
   }
 
-  // 刷新
-  loadInitData = () => {
-    this.props.dispatch({
-      type: `${namespace}/fetchList`,
-    });
-  };
-
   getFilters = () => [
     {
       name: formatMessage({ id: 'form.consumption.orderCode.label' }), // 订单编号

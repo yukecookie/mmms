@@ -10,6 +10,7 @@ import pathToRegexp from 'path-to-regexp';
 import Media from 'react-media';
 import { formatMessage } from 'umi/locale';
 import Authorized from '@/utils/Authorized';
+import { goToPage } from '@/utils/utils';
 import logo from '../assets/logo.png';
 import Footer from './Footer';
 import Header from './Header';
@@ -65,6 +66,10 @@ class BasicLayout extends React.PureComponent {
     } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
+    }).then(res => {
+      if (!res.id) {
+        goToPage('/user/login');
+      }
     });
     dispatch({
       type: 'setting/getSetting',
@@ -223,11 +228,12 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ global, setting, menu: menuModel }) => ({
+export default connect(({ global, setting, menu: menuModel, user }) => ({
   collapsed: global.collapsed,
   layout: setting.layout,
   menuData: menuModel.menuData,
   breadcrumbNameMap: menuModel.breadcrumbNameMap,
+  user,
   ...setting,
 }))(props => (
   <Media query="(max-width: 599px)">
