@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-filename-extension, no-else-return */
 import React, { PureComponent } from 'react';
-import { Card, Button } from 'antd';
-import TableLayout from '../../layouts/TableLayout';
+import { Card } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 // import ActionButton from '../../components/ActionButton';
 // import globalStyles from '../../common/globalStyles.less';
@@ -171,36 +170,51 @@ export default class BasePageComponent extends PureComponent {
     );
   };
 
-  renderTableLayout = () => {
-    const { title } = this.props;
-    if (title) {
-      return (
-        <TableLayout
-          id="no"
-          title={title}
-          renderTitleSide={() => (
-            <Button
-              type="primary"
-              ghost
-              icon="plus"
-              style={{ border: 0, fontWeight: 'bold' }}
-              onClick={e => {
-                this.handleLinkToDetail(e, 0, 0);
-              }}
-            >
-              <span style={{ fontSize: 16, fontFamily: '微软雅黑' }}>创建新租户</span>
-            </Button>
-          )}
-        >
-          {this.renderPageHeaderLayout()}
-        </TableLayout>
-      );
-    } else {
-      return <div>{this.renderPageHeaderLayout()}</div>;
-    }
-  };
-
   render() {
-    return <div>{this.renderTableLayout()}</div>;
+    const {
+      [this.options.namespace]: { dataSource = [], pagination },
+      loading,
+      form,
+    } = this.props;
+    // const actions = this.getActionButtons();
+    return (
+      <PageHeaderLayout
+        wrapperClassName={this.options.styles[this.options.namespace]}
+        filter={
+          this.getFilters && (
+            <Card>
+              {/* {actions &&
+              <div className={globalStyles.operator} style={{ marginBottom: '10px' }}>
+                {actions}
+              </div>} */}
+              <Filter
+                col={4}
+                form={form}
+                extraButtons={this.getExtraButtons()}
+                loading={loading.effects[`${this.options.namespace}/fetchList`]}
+                onFilterChange={this.handleFilterChange}
+                filters={this.getFilters()}
+              />
+            </Card>
+          )
+        }
+        table={
+          this.getTableRowSelection && (
+            <Card>
+              <List
+                dataSource={dataSource}
+                pagination={pagination.total ? pagination : false} // 数据页
+                loading={loading.effects[`${this.options.namespace}/fetchList`]}
+                rowSelection={this.getTableRowSelection()}
+                // scroll: { x: 3380 },
+                rowKey={this.options.rowKey}
+                onChange={this.handleTableChange}
+                columns={this.getColumns()}
+              />
+            </Card>
+          )
+        }
+      />
+    );
   }
 }

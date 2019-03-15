@@ -4,17 +4,17 @@
  * feature: 消费信息查询
  */
 
+import React from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { formatMessage } from 'umi/locale';
-import { Form } from 'antd';
+import { formatMessage, FormattedMessage } from 'umi/locale';
+import { Form, Button, message, Modal } from 'antd';
 import BasePageComponent from '../BasePageComponent';
+import styles from './ConsumptionList.less';
+import { showCreateModal } from '@/utils/CreateModal';
 
 const namespace = 'consumptionInfo';
 
-// @connect(({ loading }) => ({
-//   submitting: loading.effects['form/submitRegularForm'],
-// }))
 @connect(state => ({
   [namespace]: state[namespace],
   loading: state.loading,
@@ -27,9 +27,67 @@ class ConsumptionList extends BasePageComponent {
     super(props, {
       namespace,
       rowKey,
-      // styles,
+      styles,
     });
   }
+
+  handleAdd = () => {
+    showCreateModal({
+      title: '添加消费信息',
+      width: 800,
+      col: 1,
+      inputItems: [
+        {
+          name: '结束时间',
+          type: 'date',
+          field: 'endDate',
+          inputProps: {
+            showTime: true,
+            format: 'YYYY-MM-DD HH:mm:ss',
+            placeholder: '结束时间',
+          },
+          rules: [{ required: true, message: '时间不能为空' }],
+        },
+      ],
+      onHandleOk: values => {
+        // console.log(data);
+        const { dispatch } = this.props;
+        dispatch({
+          type: `${this.options.namespace}/continue`,
+          payload: {
+            endDate: values.endDate,
+            isReservation: false,
+          },
+        }).then(
+          res => {
+            message.success(res.message || '续占成功');
+            // this.loadInitData();// 刷新列表
+            return res;
+          },
+          err => {
+            Modal.error({
+              title: '续占失败',
+              content: err.message,
+            });
+            return Promise.reject(err);
+          }
+        );
+      },
+    });
+  };
+
+  getExtraButtons = () => [
+    <Button
+      type="primary"
+      ghost
+      icon="plus"
+      className={styles.addConsumptionBtn}
+      onClick={this.handleAdd}
+    >
+      {' '}
+      {<FormattedMessage id="menu.personal" defaultMessage="添加消费信息" />}{' '}
+    </Button>,
+  ];
 
   getFilters = () => [
     {
