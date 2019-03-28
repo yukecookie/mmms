@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi/locale';
 import { Form } from 'antd';
 import BasePageComponent from '../../BasePageComponent';
+import styles from './ScoreGiven.less';
 
 const namespace = 'givenByConsumption';
 
@@ -23,9 +24,11 @@ class Consumption extends BasePageComponent {
     super(props, {
       namespace,
       rowKey,
-      // styles,
+      styles,
     });
   }
+
+  getExtraButtons = () => [];
 
   getFilters = () => [
     {
@@ -33,7 +36,7 @@ class Consumption extends BasePageComponent {
       field: 'orderCode',
     },
     {
-      name: formatMessage({ id: 'form.consumption.cardNum.label' }), // 会员卡号
+      name: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
       field: 'cardNum',
     },
   ];
@@ -52,7 +55,7 @@ class Consumption extends BasePageComponent {
       key: 'orderCode',
     },
     {
-      title: formatMessage({ id: 'form.consumption.cardNum.label' }), // 会员卡号
+      title: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
       width: 110,
       dataIndex: 'cardNum',
       key: 'cardNum',
@@ -64,7 +67,7 @@ class Consumption extends BasePageComponent {
       key: 'amount',
     },
     {
-      title: formatMessage({ id: 'form.consumption.givenScore.label' }), // 商品类型
+      title: formatMessage({ id: 'form.consumption.givenScore.label' }), // 赠送积分 商品类型
       width: 120,
       dataIndex: 'givenScore',
       key: 'givenScore',

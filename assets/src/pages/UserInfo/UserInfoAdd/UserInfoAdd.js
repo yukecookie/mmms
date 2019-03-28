@@ -1,19 +1,18 @@
 /**
  * author: 朱港回
- * time: 2019/03/17
- * feature: 消费
+ * time: 2019/03/26
+ * feature: 会员信息添加
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
 import { formatMessage } from 'umi/locale';
-import { Form, Button, message, Modal } from 'antd';
-import BasePageComponent from '../BasePageComponent';
-import styles from './ConsumptionList.less';
+import { Form, Button, message, Modal, Divider } from 'antd';
+import BasePageComponent from '../../BasePageComponent';
+import styles from './UserInfoAdd.less';
 import showCreateModal from '@/utils/CreateModal';
 
-const namespace = 'consumptionInfo';
+const namespace = 'userInfoAdd';
 
 @connect(state => ({
   [namespace]: state[namespace],
@@ -21,7 +20,7 @@ const namespace = 'consumptionInfo';
   currentUser: state.user.currentUser,
 }))
 @Form.create()
-class ConsumptionList extends BasePageComponent {
+class UserInfoAdd extends BasePageComponent {
   constructor(props) {
     const rowKey = 'orderCode';
     super(props, {
@@ -32,48 +31,40 @@ class ConsumptionList extends BasePageComponent {
   }
 
   handleAdd = () => {
-    // const { form: { getFieldValue } } = this.props;
     showCreateModal({
-      title: formatMessage({ id: 'form.consumption.addModal.title' }),
+      title: formatMessage({ id: 'form.userInfo.addModal.title' }),
       width: 800,
       col: 2,
       inputItems: [
         {
-          name: formatMessage({ id: 'form.consumption.orderCode.label' }),
+          name: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
           field: 'orderCode',
           placeholder: formatMessage({ id: 'app.filter.text_pleaseInput' }),
           rules: [{ required: true, message: formatMessage({ id: 'form.validation.required' }) }],
         },
         {
-          name: formatMessage({ id: 'form.cardNum.label' }),
+          name: formatMessage({ id: 'form.userInfo.userName.label' }), // 用户名 自动生成
           field: 'cardNum',
           placeholder: formatMessage({ id: 'app.filter.text_pleaseInput' }),
           rules: [{ required: true, message: formatMessage({ id: 'form.validation.required' }) }],
         },
         {
-          name: formatMessage({ id: 'form.consumption.productType.label' }),
+          name: formatMessage({ id: 'form.userInfo.name.label' }), // 会员姓名
           field: 'productType',
           placeholder: formatMessage({ id: 'app.filter.select_pleaseChoose' }),
           rules: [{ required: true, message: formatMessage({ id: 'form.validation.required' }) }],
         },
         {
-          name: formatMessage({ id: 'form.consumption.amount.label' }),
+          name: formatMessage({ id: 'fform.userInfo.mobile.label' }), // 手机号码
           field: 'amount',
           placeholder: formatMessage({ id: 'app.filter.text_pleaseInput' }),
           rules: [{ required: true, message: formatMessage({ id: 'form.validation.required' }) }],
         },
         {
-          name: formatMessage({ id: 'form.consumption.isScore.label' }), // 是否能用积分抵扣
+          name: formatMessage({ id: 'form.userInfo.sex.label' }), // 性别
           type: 'radio',
           field: 'isScore',
           value: 'false',
-          rules: [
-            { required: true, message: formatMessage({ id: 'app.filter.select_pleaseChoose' }) },
-          ],
-          formItemLayout: {
-            labelCol: { span: 10 },
-            wrapperCol: { span: 14 },
-          },
           dataSource: [
             {
               text: '是',
@@ -86,16 +77,12 @@ class ConsumptionList extends BasePageComponent {
           ],
         },
         {
-          name: formatMessage({ id: 'form.consumption.scorePercent.label' }),
-          field: 'scorePercent',
+          name: formatMessage({ id: 'form.userInfo.email.label' }), // 邮箱
+          field: 'amount1',
           placeholder: formatMessage({ id: 'app.filter.text_pleaseInput' }),
-          hide: form => form.getFieldValue('isScore') !== 'true',
-          // inputProps: {
-          //   disabled: form => form.getFieldValue('isScore') !== 'true',
-          // },
         },
         {
-          name: formatMessage({ id: 'form.consumption.orderCreationDate.label' }),
+          name: formatMessage({ id: 'form.userInfo.qq.label' }), // qq
           type: 'date',
           field: 'orderCreationDate',
           inputProps: {
@@ -107,7 +94,6 @@ class ConsumptionList extends BasePageComponent {
           //   labelCol: { span: 10 },
           //   wrapperCol: { span: 14 },
           // },
-          rules: [{ required: true, message: formatMessage({ id: 'form.validation.required' }) }],
         },
       ],
       onHandleOk: values => {
@@ -139,7 +125,7 @@ class ConsumptionList extends BasePageComponent {
       ghost
       icon="plus"
       key="add"
-      className={styles.addConsumptionBtn}
+      className={styles.addUserBtn}
       onClick={this.handleAdd}
     >
       {formatMessage({ id: 'form.new.btn' })}
@@ -148,32 +134,12 @@ class ConsumptionList extends BasePageComponent {
 
   getFilters = () => [
     {
-      name: formatMessage({ id: 'form.consumption.orderCode.label' }), // 订单编号
-      field: 'orderCode',
-    },
-    {
       name: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
       field: 'cardNum',
     },
     {
-      name: formatMessage({ id: 'form.consumption.amount.label' }), // 消费金额
-      field: 'amount',
-    },
-    {
-      name: formatMessage({ id: 'form.consumption.productType.label' }), // 商品类型
-      field: 'productType',
-    },
-    {
-      name: formatMessage({ id: 'form.consumption.orderCreationDate.label' }), // 下单时间
-      field: 'orderCreationDateMin__orderCreationDateMax',
-      type: 'range-picker',
-      // col: 2,
-      span: 2,
-      inputProps: {
-        showTime: {
-          defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')],
-        },
-      },
+      name: formatMessage({ id: 'form.userInfo.mobile.label' }), // 手机号码
+      field: 'mobile',
     },
   ];
 
@@ -182,42 +148,53 @@ class ConsumptionList extends BasePageComponent {
       title: formatMessage({ id: 'form.index.label' }), // index序号
       width: 60,
       key: 'index',
-      // dataIndex: 'index',
       render: (val, record, index) => index + 1,
     },
     {
-      title: formatMessage({ id: 'form.consumption.orderCode.label' }), // 订单编号
-      width: 150,
-      dataIndex: 'orderCode',
-      key: 'orderCode',
-    },
-    {
       title: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
-      width: 110,
+      width: 150,
       dataIndex: 'cardNum',
       key: 'cardNum',
     },
     {
-      title: formatMessage({ id: 'form.consumption.amount.label' }), // 消费金额
+      title: formatMessage({ id: 'form.userInfo.cardBalance.label' }), // 卡金额
       width: 110,
-      dataIndex: 'amount',
-      key: 'amount',
+      dataIndex: 'cardBalance',
+      key: 'cardBalance',
     },
     {
-      title: formatMessage({ id: 'form.consumption.productType.label' }), // 商品类型
+      title: formatMessage({ id: 'form.userInfo.vipAmount.label' }), // 消费总额
+      width: 110,
+      dataIndex: 'vipAmount',
+      key: 'vipAmount',
+    },
+    {
+      title: formatMessage({ id: 'form.userInfo.vipCredit.label' }), // 累计积分
       width: 120,
-      dataIndex: 'productType',
-      key: 'productType',
-      // render: (item, record) => record.posInfo && record.posInfo.displayName,
+      dataIndex: 'vipCredit',
+      key: 'vipCredit',
     },
     {
-      title: formatMessage({ id: 'form.consumption.orderCreationDate.label' }), // 下单时间
+      title: formatMessage({ id: 'form.userInfo.cardActiveDate.label' }), // 开卡时间
       width: 150,
-      dataIndex: 'orderCreationDate',
+      dataIndex: 'cardActiveDate',
       sorter: true,
-      key: 'orderCreationDate',
+      key: 'cardActiveDate',
+    },
+    {
+      title: formatMessage({ id: 'form.userInfo.operation.label' }), // 操作
+      width: 150,
+      // dataIndex: 'operation',
+      key: 'operation',
+      render: (text, record) => (
+        <Fragment>
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a>
+          <Divider type="vertical" />
+          <a href="">订阅警报</a>
+        </Fragment>
+      ),
     },
   ];
 }
 
-export default ConsumptionList;
+export default UserInfoAdd;

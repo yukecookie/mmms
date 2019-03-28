@@ -48,7 +48,7 @@ class GiftManage extends BasePageComponent {
       key: 'orderCode',
     },
     {
-      title: formatMessage({ id: 'form.consumption.cardNum.label' }), // 商品名称
+      title: formatMessage({ id: 'form.cardNum.label' }), // 商品名称
       width: 110,
       dataIndex: 'cardNum',
       key: 'cardNum',

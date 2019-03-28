@@ -10,6 +10,7 @@ const swig=require("swig")
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const consumptionRouter = require('./routes/consumption');
+const scoreRouter = require('./routes/score');
 
 const app = express();
 app.all('*', function (req, res, next) {
@@ -62,6 +63,7 @@ app.use(express.static(path.join(__dirname, './assets/build')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/consumption', consumptionRouter);
+app.use('/score', scoreRouter);
 
 app.use((req,res)=>{
   res.setHeader("Access-Control-Allow-Origin", "*");

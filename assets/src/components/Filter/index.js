@@ -370,7 +370,7 @@ class Filter extends PureComponent {
                   filter.onChange(value, form);
                 }
               }}
-              placeholder={formatMessage({ id: 'app.filter.text_pleaseChoose' })}
+              placeholder={formatMessage({ id: 'app.filter.text_pleaseInput' })}
               key={`input_${filterIndex}`}
               {...filter.inputProps}
             />
@@ -493,7 +493,7 @@ class Filter extends PureComponent {
                 }
               }}
               placeholder={`${filter.placeholder ||
-                formatMessage({ id: 'app.filter.text_pleaseChoose' })}`}
+                formatMessage({ id: 'app.filter.text_pleaseInput' })}`}
               key={`input-number_${filterIndex}`}
               style={{ width: '100%' }}
               {...filter.inputProps}
@@ -510,7 +510,7 @@ class Filter extends PureComponent {
                     filter.onChange(value, form);
                   }
                 }}
-                placeholder={formatMessage({ id: 'app.filter.text_pleaseChoose' })}
+                placeholder={formatMessage({ id: 'app.filter.text_pleaseInput' })}
                 key={`input_${filterIndex}`}
                 {...filter.inputProps}
               />
@@ -524,7 +524,7 @@ class Filter extends PureComponent {
                     filter.onChange(value, form);
                   }
                 }}
-                placeholder={formatMessage({ id: 'app.filter.text_pleaseChoose' })}
+                placeholder={formatMessage({ id: 'app.filter.text_pleaseInput' })}
                 key={`input_${filterIndex}`}
                 {...filter.inputProps}
               />

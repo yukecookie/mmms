@@ -85,7 +85,7 @@ class AddInfo extends PureComponent {
           field: 'orderCode',
         },
         {
-          name: formatMessage({ id: 'form.consumption.cardNum.label' }), // 会员卡号
+          name: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
           field: 'cardNum',
         },
         {
@@ -150,7 +150,7 @@ class AddInfo extends PureComponent {
           key: 'orderCode',
         },
         {
-          title: formatMessage({ id: 'form.consumption.cardNum.label' }), // 会员卡号
+          title: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
           width: 110,
           dataIndex: 'logisticsCompany',
           key: 'logisticsCompany',

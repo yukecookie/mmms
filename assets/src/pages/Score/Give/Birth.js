@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi/locale';
 import { Form } from 'antd';
 import BasePageComponent from '../../BasePageComponent';
+import styles from './ScoreGiven.less';
 
 const namespace = 'givenByBirth';
 
@@ -23,17 +24,19 @@ class Birth extends BasePageComponent {
     super(props, {
       namespace,
       rowKey,
-      // styles,
+      styles,
     });
   }
 
+  getExtraButtons = () => [];
+
   getFilters = () => [
     {
-      name: formatMessage({ id: 'form.consumption.cardNum.label' }), // 会员卡号
+      name: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
       field: 'cardNum',
     },
     {
-      name: formatMessage({ id: 'form.consumption.name.label' }), // 姓名
+      name: formatMessage({ id: 'form.consumption.userName.label' }), // 姓名
       field: 'name',
     },
   ];
@@ -46,13 +49,13 @@ class Birth extends BasePageComponent {
       render: (val, record, index) => index + 1,
     },
     {
-      title: formatMessage({ id: 'form.consumption.cardNum.label' }), // 会员卡号
+      title: formatMessage({ id: 'form.cardNum.label' }), // 会员卡号
       width: 110,
       dataIndex: 'cardNum',
       key: 'cardNum',
     },
     {
-      title: formatMessage({ id: 'form.consumption.name.label' }), // 姓名
+      title: formatMessage({ id: 'form.consumption.userName.label' }), // 用户名
       width: 110,
       dataIndex: 'name',
       key: 'name',

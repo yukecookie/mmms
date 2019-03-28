@@ -296,7 +296,7 @@ class InputGroups extends PureComponent {
                   inputItem.onChange(value, form);
                 }
               }}
-              placeholder={formatMessage({ id: 'app.filter.text_pleaseChoose' })}
+              placeholder={formatMessage({ id: 'app.filter.text_pleaseInput' })}
               key={`input_${filterIndex}`}
               style={{ fontSize: 13 }}
               {...inputItem.inputProps}
@@ -314,7 +314,7 @@ class InputGroups extends PureComponent {
               placeholder={
                 inputItem.placeholder ||
                 inputItem.name ||
-                formatMessage({ id: 'app.filter.text_pleaseChoose' })
+                formatMessage({ id: 'app.filter.text_pleaseInput' })
               }
               key={`input_${filterIndex}`}
               style={{ fontSize: 13 }}
@@ -335,7 +335,7 @@ class InputGroups extends PureComponent {
               placeholder={
                 inputItem.placeholder ||
                 inputItem.name ||
-                formatMessage({ id: 'app.filter.text_pleaseChoose' })
+                formatMessage({ id: 'app.filter.text_pleaseInput' })
               }
               key={`input_${filterIndex}`}
               style={{ fontSize: 13 }}

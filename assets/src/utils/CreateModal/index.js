@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable consistent-return, no-else-return */
 import { formatMessage } from 'umi/locale';
 import React, { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
@@ -155,8 +155,8 @@ class CreateModal extends PureComponent {
         className={modalProps.className}
         onCancel={this.handleCancel}
         onOk={this.handleOk}
-        cancelText={formatMessage({ id: 'app.filter.btn_cancel' })}
-        okText={formatMessage({ id: 'app.filter.btn_ok' })}
+        cancelText={formatMessage({ id: 'app.list.cancel' })}
+        okText={formatMessage({ id: 'app.list.submit' })}
       >
         {button ? (
           <Button type="primary" onClick={buttonOnclick}>
@@ -171,7 +171,7 @@ class CreateModal extends PureComponent {
   }
 }
 
-export const showCreateModal = function(config) {
+export default function showCreateModal(config) {
   const div = document.createElement('div');
   document.body.appendChild(div);
   function destroy(...args) {
@@ -198,4 +198,4 @@ export const showCreateModal = function(config) {
   return {
     destroy: close,
   };
-};
+}

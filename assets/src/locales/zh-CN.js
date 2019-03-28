@@ -39,7 +39,7 @@ export default {
   'app.list.message_hasChoosePart2': '项',
   'app.list.btn_clear': '清空',
 
-  'app.filter.text_pleaseChoose': '请输入', // filter
+  'app.filter.text_pleaseInput': '请输入', // filter
   'app.filter.select_pleaseChoose': '请选择',
   'app.filter.message_noData': '没有相应的数据',
   'app.filter.text_startDate': '开始日期',
@@ -53,6 +53,7 @@ export default {
   'app.site.yes': '是',
   'app.site.no': '否',
 
+  'app.list.cancel': '取消',
   'app.list.title': '保存', //
   'app.list.submit': '提交', //
   ...analysis,
