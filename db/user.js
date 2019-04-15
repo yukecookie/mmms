@@ -14,7 +14,7 @@ let addUser = (params) => {
       if(err) {
         return reject(err);
       }
-      const sql = 'insert into user_info(user_name, password,mobile,name,sex,email,qq) values(?, ?,?,?,?,?,?)';
+      const sql = 'insert into user_info(userName, password,mobile,name,sex,email,qq) values(?, ?,?,?,?,?,?)';
       cnt.query(sql, params, (error, res) => {
         cnt.release();
         if(error) {
@@ -30,8 +30,8 @@ let findUser = (params) => {
     pool.getConnection((err, cnt) => {
       if(err) {
         return reject(err);
-      } 
-      let sql = 'select * from user_info where user_name = ?';
+      }
+      let sql = 'select * from user_info where userName = ?';
       if(params.length > 1) {
         sql += ' and password = ?';
       }

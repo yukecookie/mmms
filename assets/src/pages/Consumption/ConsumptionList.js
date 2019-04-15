@@ -32,7 +32,6 @@ class ConsumptionList extends BasePageComponent {
   }
 
   handleAdd = () => {
-    // const { form: { getFieldValue } } = this.props;
     showCreateModal({
       title: formatMessage({ id: 'form.consumption.addModal.title' }),
       width: 800,
@@ -113,22 +112,19 @@ class ConsumptionList extends BasePageComponent {
       onHandleOk: values => {
         const { dispatch } = this.props;
         dispatch({
-          type: `${this.options.namespace}/addConsumptionInfo`,
+          type: `${namespace}/fetchAddUserInfo`,
           payload: values,
-        }).then(
-          res => {
+        }).then(res => {
+          if (res.success) {
             message.success(res.message || '添加成功');
-            // this.loadInitData();// 刷新列表
-            return res;
-          },
-          err => {
+            this.loadInitData(); // 刷新列表
+          } else {
             Modal.error({
               title: '添加失败',
-              content: err.message,
+              content: res.message,
             });
-            return Promise.reject(err);
           }
-        );
+        });
       },
     });
   };

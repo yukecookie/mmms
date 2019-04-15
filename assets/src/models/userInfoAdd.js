@@ -1,5 +1,11 @@
 import modelExtend from 'dva-model-extend';
-import { queryUserInfo } from '@/services/userInfo';
+import {
+  queryUserInfo,
+  queryAddUserInfo,
+  queryId,
+  queryMobileVerify,
+  queryUserNameVerify,
+} from '@/services/userInfo';
 import baseModal from './common';
 
 export default modelExtend(baseModal, {
@@ -34,6 +40,25 @@ export default modelExtend(baseModal, {
       } else {
         throw httpData;
       }
+    },
+
+    *fetchId({ payload }, { call }) {
+      return yield call(queryId, payload);
+    },
+
+    *fetchAddUserInfo({ payload }, { call }) {
+      const { ...query } = payload;
+      return yield call(queryAddUserInfo, { ...query });
+    },
+
+    *fetchMobileVerify({ payload }, { call }) {
+      const { ...query } = payload;
+      return yield call(queryMobileVerify, { ...query });
+    },
+
+    *fetchUserNameVerify({ payload }, { call }) {
+      const { ...query } = payload;
+      return yield call(queryUserNameVerify, { ...query });
     },
   },
 

@@ -11,7 +11,7 @@ router.post("/login/account", (req, res) => {
   const type = req.body.type;
   (async function() {
     await new Promise(function(open) {
-      const sql = "select * from user_info where user_name=? and password=?";
+      const sql = "select * from user_info where userName=? and password=?";
       pool.query(sql, [userName, password], (err, result) => {
         if (err) throw err;
         //设置响应头解决跨域
@@ -21,7 +21,7 @@ router.post("/login/account", (req, res) => {
         // });
         if (result.length > 0) {
           //如果用户存在，将用户的id保存在session中
-          req.session.userName = result[0].user_name;
+          req.session.userName = result[0].userName;
           if(userName === 'admin') {
             result = {
               status: 'ok',
@@ -35,7 +35,7 @@ router.post("/login/account", (req, res) => {
               currentAuthority: 'user',
             }
           }
-          
+
           // obj.result = result[0];
           // res.write(
           //   JSON.stringify({
@@ -71,7 +71,7 @@ router.post("/login/account", (req, res) => {
 router.post("/isLogin", (req, res) => {
   (async function() {
     await new Promise(function(open) {
-      const sql = "select * from user_info where user_name=?";
+      const sql = "select * from user_info where userName=?";
       pool.query(
         sql,
         [req.session.userName === undefined ? "" : req.session.userName],
@@ -142,7 +142,7 @@ router.post("/register", (req, res) => {
 //验证用户名是否存在
 router.post("/checkName", (req, res) => {
   check(
-    "select * from user_info where user_name=?",
+    "select * from user_info where userName=?",
     req.body.userName,
     "用户名",
     res
@@ -184,7 +184,7 @@ router.post("/sentCode", (req, res) => {
 router.post("/getBlogs", (req, res) => {
   (async function() {
     await new Promise(function(open) {
-      const sql = "select * from user_blog where user_name=?";
+      const sql = "select * from user_blog where userName=?";
       pool.query(sql, [req.body.userName], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
@@ -227,7 +227,7 @@ router.post("/currentUser1", (req, res) => {
 router.get("/currentUser", (req, res) => {
   (async function() {
     await new Promise(function(open) {
-      var sql = "SELECT * FROM user_info WHERE user_name=?";
+      var sql = "SELECT * FROM user_info WHERE userName=?";
       pool.query(sql, [req.session.userName], (err, result) => {
         if (err) throw err;
         open();
@@ -245,12 +245,12 @@ router.get("/currentUser", (req, res) => {
 router.get("/allUsers", (req, res) => {
   (async function() {
     await new Promise(function(open) {
-      var sql = "SELECT card_num FROM user_info";
+      var sql = "SELECT cardNum FROM user_info";
       pool.query(sql, [req.session.userName], (err, result) => {
         if (err) throw err;
         open();
         res.json({
-          data: result.map(item => item.card_num),
+          data: result.map(item => item.cardNum),
           msg: 'success'
         });
       });

@@ -18,7 +18,7 @@ router.post("/info", (req, res) => {
   let obj = {};
   (async function() {
     await new Promise(function(open) {
-      const sql = "select * from consumptionInfo where orderCode = ? and cardNum = ? and amount >= ? and productType = ? and (orderCreationDate between ? and ?) order by orderCreationDate DESC limit ?, ?";
+      const sql = "select * from consumption_info where orderCode = ? and cardNum = ? and amount >= ? and productType = ? and (orderCreationDate between ? and ?) order by orderCreationDate DESC limit ?, ?";
       pool.query(sql, [orderCode, cardNum, amount, productType, orderCreationDateMin, orderCreationDateMax, start, pageSize], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
@@ -48,7 +48,7 @@ router.post("/queryTag", (req, res) => {
     (async function() {
       await new Promise(function(open) {
         // 遍历每一个用户 在所有消费信息中查找 R F M 并放到二维数组中
-        const sqlR="select datediff(now(), orderCreationDate) as day from consumptionInfo where cardNum=? order by orderCreationDate desc limit 1";
+        const sqlR="select datediff(now(), orderCreationDate) as day from consumption_info where cardNum=? order by orderCreationDate desc limit 1";
         pool.query(sqlR, [cardNum], (err, result) => {
           if (err) throw err;
           if(result[0].day>30) {
@@ -61,7 +61,7 @@ router.post("/queryTag", (req, res) => {
         }); // R: 计算每个用户最近一次的消费时间距离今天是多少天
       });
       await new Promise(function(open) {
-        const sqlF="select count(*) as count from consumptionInfo where cardNum=?";
+        const sqlF="select count(*) as count from consumption_info where cardNum=?";
         pool.query(sqlF, [cardNum], (err, result) => {
           if (err) throw err;
           if(result[0].count<3) {
@@ -74,7 +74,7 @@ router.post("/queryTag", (req, res) => {
         }); // F: 计算该用户近三个月消费过多少次
       });
       await new Promise(function(open) {
-        const sqlM="select sum(amount) as totalMoney from consumptionInfo where cardNum=?";
+        const sqlM="select sum(amount) as totalMoney from consumption_info where cardNum=?";
         pool.query(sqlM, [cardNum], (err, result) => {
           if (err) throw err;
           if(result[0].totalMoney<200) {

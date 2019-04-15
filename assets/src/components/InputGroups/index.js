@@ -224,6 +224,7 @@ class InputGroups extends PureComponent {
                   inputItem.onChange(value.target.checked, form);
                 }
               }}
+              style={{ width: '100%' }}
               getCalendarContainer={getContentScrollContainer}
               {...inputItem.inputProps}
             />

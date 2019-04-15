@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { queryAllUsers, queryTag } from '../../services/consumption';
+// import { queryAllUsers, queryTag } from '../../services/consumption';
 
 class UserInfo extends PureComponent {
   componentDidMount() {
-    queryAllUsers().then(res => {
-      // console.log(res.data);
-      queryTag(res.data);
-    });
+    // queryAllUsers().then(res => {
+    //   // console.log(res.data);
+    //   queryTag(res.data);
+    // });
   }
 
   render() {

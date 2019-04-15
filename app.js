@@ -9,8 +9,10 @@ const logger = require('morgan');
 const swig=require("swig")
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const userInfoRouter = require('./routes/userInfo');
 const consumptionRouter = require('./routes/consumption');
 const scoreRouter = require('./routes/score');
+const cardRouter = require('./routes/card');
 
 const app = express();
 app.all('*', function (req, res, next) {
@@ -62,8 +64,10 @@ app.use(express.static(path.join(__dirname, './assets/build')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/userInfo', userInfoRouter);
 app.use('/consumption', consumptionRouter);
 app.use('/score', scoreRouter);
+app.use('/card', cardRouter);
 
 app.use((req,res)=>{
   res.setHeader("Access-Control-Allow-Origin", "*");

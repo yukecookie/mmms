@@ -13,7 +13,7 @@ router.post("/consumption", (req, res) => {
     let obj = {};
     (async function() {
         await new Promise(function(open) {
-            const sql = "select * from consumptionScore where orderCode = ? and cardNum = ? limit ?, ?";
+            const sql = "select * from consumption_score where orderCode = ? and cardNum = ? limit ?, ?";
             pool.query(sql, [orderCode, cardNum, start, pageSize], (err, result) => {
                 if (err) throw err;
                 if (result.length > 0) {
@@ -42,7 +42,7 @@ router.post("/birth", (req, res) => {
     let obj = {};
     (async function() {
         await new Promise(function(open) {
-            const sql = "select * from birthScore where user_name = ? and cardNum = ? limit ?, ?";
+            const sql = "select * from birthScore where userName = ? and cardNum = ? limit ?, ?";
             pool.query(sql, [userName, cardNum, start, pageSize], (err, result) => {
                 if (err) throw err;
                 if (result.length > 0) {

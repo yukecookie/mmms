@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi/locale';
-import { Form, Input, Button, Card } from 'antd';
+import { Form, Input, Button, Card, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
+const namespace = 'userCard';
 const FormItem = Form.Item;
 
 @connect(({ loading }) => ({
-  submitting: loading.effects['form/submitRegularForm'],
+  submitting: loading.effects[`${namespace}/fetchCardLost`],
 }))
 @Form.create()
 class CardLock extends PureComponent {
@@ -17,8 +18,19 @@ class CardLock extends PureComponent {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         dispatch({
-          type: 'form/submitRegularForm',
+          type: `${namespace}/fetchCardLost`,
           payload: values,
+        }).then(res => {
+          if (res.success) {
+            Modal.success({
+              title: '锁定成功',
+            });
+          } else {
+            Modal.error({
+              title: '锁定失败',
+              content: res.message,
+            });
+          }
         });
       }
     });
@@ -57,7 +69,7 @@ class CardLock extends PureComponent {
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
             <FormItem {...formItemLayout} label={<FormattedMessage id="form.card.charge.label" />}>
-              {getFieldDecorator('title', {
+              {getFieldDecorator('num', {
                 rules: [
                   {
                     required: true,
@@ -65,7 +77,6 @@ class CardLock extends PureComponent {
                   },
                 ],
               })(<Input placeholder={formatMessage({ id: 'form.card.placeholder' })} />)}{' '}
-              {/* 前台正则判断？ */}
             </FormItem>
             <FormItem {...submitFormLayout} style={{ marginTop: 32, marginLeft: 200 }}>
               <Button type="primary" htmlType="submit" loading={submitting}>

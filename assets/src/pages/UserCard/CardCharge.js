@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi/locale';
-import { Form, Input, InputNumber, Button, Card } from 'antd';
+import { Form, Input, InputNumber, Button, Card, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import styles from './CardCharge.less';
 
+const namespace = 'userCard';
 const FormItem = Form.Item;
 
 @connect(({ loading }) => ({
-  submitting: loading.effects['form/submitRegularForm'],
+  submitting: loading.effects[`${namespace}/fetchCardCharge`],
 }))
 @Form.create()
 class CardCharge extends PureComponent {
@@ -18,8 +18,19 @@ class CardCharge extends PureComponent {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         dispatch({
-          type: 'form/submitRegularForm',
+          type: `${namespace}/fetchCardCharge`,
           payload: values,
+        }).then(res => {
+          if (res.success) {
+            Modal.success({
+              title: res.message,
+            });
+          } else {
+            Modal.error({
+              title: '充值失败',
+              content: res.message,
+            });
+          }
         });
       }
     });
@@ -58,7 +69,7 @@ class CardCharge extends PureComponent {
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
             <FormItem {...formItemLayout} label={<FormattedMessage id="form.card.charge.label" />}>
-              {getFieldDecorator('title', {
+              {getFieldDecorator('num', {
                 rules: [
                   {
                     required: true,
@@ -66,40 +77,9 @@ class CardCharge extends PureComponent {
                   },
                 ],
               })(<Input placeholder={formatMessage({ id: 'form.card.placeholder' })} />)}{' '}
-              {/* 前台正则判断？ */}
             </FormItem>
             <FormItem {...formItemLayout} label={<FormattedMessage id="form.card.charge.amount" />}>
-              {getFieldDecorator('amount')(
-                <div>
-                  <Button className={styles.chargeBtn} size="large">
-                    50
-                  </Button>
-                  <Button className={styles.chargeBtn} size="large">
-                    100
-                  </Button>
-                  <Button className={styles.chargeBtn} size="large">
-                    200
-                  </Button>
-                  <Button className={styles.chargeBtn} size="large">
-                    500
-                  </Button>
-                  <Button className={styles.chargeBtn} size="large">
-                    1000
-                  </Button>
-                  <Button className={styles.chargeBtn} size="large">
-                    其他
-                  </Button>
-                </div>
-              )}{' '}
-              {/* 失焦判断 onclick判断 */}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label={<FormattedMessage id="form.card.charge.self-defining" />}
-            >
-              {' '}
-              {/* display this.state.xxx onclick判断 */}
-              {getFieldDecorator('selfDefining', {
+              {getFieldDecorator('amount', {
                 rules: [
                   {
                     required: true,

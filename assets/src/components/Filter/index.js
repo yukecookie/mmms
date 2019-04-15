@@ -296,6 +296,7 @@ class Filter extends PureComponent {
                   filter.onChange(value, form);
                 }
               }}
+              style={{ width: '100%' }}
               data-code={filter.field}
               getCalendarContainer={getContentScrollContainer}
               {...filter.inputProps}
