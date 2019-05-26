@@ -1,5 +1,12 @@
 import modelExtend from 'dva-model-extend';
-import { queryConsumptionInfo, queryTag } from '@/services/consumption';
+import {
+  queryConsumptionInfo,
+  queryAddConsumptionInfo,
+  queryTag,
+  queryDeleteConsumptionInfo,
+  queryOrderCodeVerify,
+  queryCardNumVerify,
+} from '@/services/consumption';
 import baseModal from './common';
 
 export default modelExtend(baseModal, {
@@ -35,8 +42,25 @@ export default modelExtend(baseModal, {
         throw httpData;
       }
     },
+    *fetchOrderCodeVerify({ payload }, { call }) {
+      const { ...query } = payload;
+      return yield call(queryOrderCodeVerify, { ...query });
+    },
+    *fetchCardNumVerify({ payload }, { call }) {
+      const { ...query } = payload;
+      return yield call(queryCardNumVerify, { ...query });
+    },
+    *fetchAddConsumptionInfo({ payload }, { call }) {
+      const { ...query } = payload;
+      const httpData = yield call(queryAddConsumptionInfo, { ...query });
+      return httpData;
+    },
     *fetchTag({ payload }, { call }) {
       const httpData = yield call(queryTag, payload);
+      return httpData;
+    },
+    *fetchDeleteConsumptionInfo({ payload }, { call }) {
+      const httpData = yield call(queryDeleteConsumptionInfo, payload);
       return httpData;
     },
   },

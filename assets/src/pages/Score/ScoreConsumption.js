@@ -8,6 +8,7 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi/locale';
 import { Form } from 'antd';
 import BasePageComponent from '../BasePageComponent';
+import styles from './Give/ScoreGiven.less';
 
 const namespace = 'scoreConsumption';
 
@@ -23,9 +24,11 @@ class ScoreConsumption extends BasePageComponent {
     super(props, {
       namespace,
       rowKey,
-      // styles,
+      styles,
     });
   }
+
+  getExtraButtons = () => [];
 
   getFilters = () => [
     {
@@ -58,28 +61,16 @@ class ScoreConsumption extends BasePageComponent {
       key: 'cardNum',
     },
     {
-      title: formatMessage({ id: 'form.consumption.isScore.label' }), // 是否能用积分抵扣
+      title: formatMessage({ id: 'form.consumption.amount.label' }), // 消费金额
       width: 110,
       dataIndex: 'amount',
       key: 'amount',
     },
     {
-      title: formatMessage({ id: 'form.consumption.ScorePercentage.label' }), // 抵扣百分比
-      width: 120,
-      dataIndex: 'ScorePercentage',
-      key: 'ScorePercentage',
-    },
-    {
-      title: formatMessage({ id: 'form.consumption.productPrice.label' }), // 商品价格
+      title: formatMessage({ id: 'form.consumption.credit.label' }), // 抵扣积分
       width: 110,
-      dataIndex: 'productPrice',
-      key: 'productPrice',
-    },
-    {
-      title: formatMessage({ id: 'form.consumption.payPrice.label' }), // 付款价格
-      width: 120,
-      dataIndex: 'payPrice',
-      key: 'payPrice',
+      dataIndex: 'credit',
+      key: 'credit',
     },
   ];
 }

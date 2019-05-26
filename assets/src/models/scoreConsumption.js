@@ -1,15 +1,9 @@
 import modelExtend from 'dva-model-extend';
-import {
-  queryUserInfo,
-  queryAddUserInfo,
-  queryId,
-  queryMobileVerify,
-  queryUserNameVerify,
-} from '@/services/userInfo';
+import { queryScoreConsumption } from '@/services/score';
 import baseModal from './common';
 
 export default modelExtend(baseModal, {
-  namespace: 'userInfoAdd',
+  namespace: 'scoreConsumption',
 
   state: {
     query: {},
@@ -22,7 +16,7 @@ export default modelExtend(baseModal, {
   effects: {
     *fetchList({ payload }, { call, put }) {
       const { page = 1, pageSize = 10, ...query } = payload;
-      const httpData = yield call(queryUserInfo, { ...query, page, pageSize });
+      const httpData = yield call(queryScoreConsumption, { ...query, page, pageSize });
       if (httpData && httpData.success) {
         yield put({
           type: 'updateState',
@@ -40,26 +34,6 @@ export default modelExtend(baseModal, {
       } else {
         throw httpData;
       }
-    },
-
-    *fetchId({ payload }, { call }) {
-      return yield call(queryId, payload);
-    },
-
-    *fetchAddUserInfo({ payload }, { call }) {
-      const { ...query } = payload;
-      return yield call(queryAddUserInfo, { ...query });
-    },
-
-    *fetchMobileVerify({ payload, callback }, { call }) {
-      const { ...query } = payload;
-      const res = yield call(queryMobileVerify, { ...query });
-      callback(res);
-    },
-
-    *fetchUserNameVerify({ payload }, { call }) {
-      const { ...query } = payload;
-      return yield call(queryUserNameVerify, { ...query });
     },
   },
 

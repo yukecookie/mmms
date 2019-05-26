@@ -57,20 +57,20 @@ class Birth extends BasePageComponent {
     {
       title: formatMessage({ id: 'form.consumption.userName.label' }), // 用户名
       width: 110,
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: formatMessage({ id: 'form.consumption.birth.label' }), // 生日
-      width: 120,
-      dataIndex: 'birth',
-      key: 'birth',
+      dataIndex: 'userName',
+      key: 'userName',
     },
     {
       title: formatMessage({ id: 'form.consumption.givenScore.label' }), // 积分
       width: 120,
       dataIndex: 'givenScore',
       key: 'givenScore',
+    },
+    {
+      title: formatMessage({ id: 'form.consumption.givenTime.label' }), // 赠送时间
+      width: 120,
+      dataIndex: 'givenTime',
+      key: 'givenTime',
     },
   ];
 }

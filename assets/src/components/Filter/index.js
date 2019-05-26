@@ -497,6 +497,8 @@ class Filter extends PureComponent {
                 formatMessage({ id: 'app.filter.text_pleaseInput' })}`}
               key={`input-number_${filterIndex}`}
               style={{ width: '100%' }}
+              // formatter={ filter.formatter === '%' ? value => `${value}%` : value }
+              // parser={ filter.formatter === '%' ? value => value.replace('%', '') : value }
               {...filter.inputProps}
             />
           );

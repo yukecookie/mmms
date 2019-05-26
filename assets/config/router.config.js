@@ -124,7 +124,7 @@ export default [
           {
             path: '/score/consumption',
             name: 'consumption',
-            component: './Exception/404',
+            component: './Score/ScoreConsumption',
           },
           // {
           //   path: '/score/gift-exchange',
@@ -135,7 +135,7 @@ export default [
             path: '/score/gift-manage',
             name: 'gift-manage',
             // hideInMenu: true,
-            component: './Exception/TriggerException',
+            component: './Score/GiftManage',
           },
         ],
       },

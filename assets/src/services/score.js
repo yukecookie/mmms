@@ -14,3 +14,17 @@ export async function queryConsumptionScore(params) {
     method: 'POST',
   });
 }
+
+export async function queryScoreConsumption(params) {
+  return request('/api/score/score', {
+    body: filterNullValueObject(params),
+    method: 'POST',
+  });
+}
+
+export async function queryGiftInfo(params) {
+  return request('/api/score/gift', {
+    body: filterNullValueObject(params),
+    method: 'POST',
+  });
+}

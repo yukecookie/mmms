@@ -4,10 +4,11 @@ import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Button, Card, Modal } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
+const namespace = 'consumptionInfo';
 const FormItem = Form.Item;
 
 @connect(({ loading }) => ({
-  submitting: loading.effects['form/submitRegularForm'],
+  submitting: loading.effects[`${namespace}/fetchDeleteConsumptionInfo`],
 }))
 @Form.create()
 class ConsumptionRefund extends PureComponent {
@@ -17,13 +18,17 @@ class ConsumptionRefund extends PureComponent {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         dispatch({
-          type: 'form/submitRegularForm', //
+          type: `${namespace}/fetchDeleteConsumptionInfo`,
           payload: values,
         }).then(res => {
-          // console.log(res);
           if (res.success) {
+            Modal.success({
+              title: res.message,
+            });
+          } else {
             Modal.error({
-              title: res.message || '订单不存在',
+              title: res.message,
+              content: '订单不存在',
             });
           }
         });
@@ -67,17 +72,14 @@ class ConsumptionRefund extends PureComponent {
               {...formItemLayout}
               label={<FormattedMessage id="form.consumption.refund.label" />}
             >
-              {getFieldDecorator('title', {
+              {getFieldDecorator('orderCode', {
                 rules: [
                   {
                     required: true,
                     message: formatMessage({ id: 'form.validation.consumption.refund.required' }),
                   },
                 ],
-              })(
-                <Input placeholder={formatMessage({ id: 'form.consumption.placeholder' })} />
-              )}{' '}
-              {/* 前台正则判断？ */}
+              })(<Input placeholder={formatMessage({ id: 'form.consumption.placeholder' })} />)}
             </FormItem>
             <FormItem {...submitFormLayout} style={{ marginTop: 32, marginLeft: 200 }}>
               <Button type="primary" htmlType="submit" loading={submitting}>

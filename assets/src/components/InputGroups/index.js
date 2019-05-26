@@ -1,4 +1,4 @@
-/* eslint-disable react/no-array-index-key, consistent-return, no-nested-ternary, react/jsx-indent */
+/* eslint-disable react/no-array-index-key, consistent-return, no-nested-ternary, react/jsx-indent, import/no-cycle */
 /**
  * Created by yunqiang.wu on 7/9/2017.
  *
@@ -201,6 +201,8 @@ class InputGroups extends PureComponent {
                   inputItem.onChange(value, form);
                 }
               }}
+              formatter={inputItem.formatter === '%' ? value => `${value}%` : value} // eslint-disable-line
+              parser={inputItem.formatter === '%' ? value => value.replace('%', '') : value} // eslint-disable-line
               {...inputItem.inputProps}
             />
           );

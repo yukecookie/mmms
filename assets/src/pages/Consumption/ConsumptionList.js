@@ -31,6 +31,13 @@ class ConsumptionList extends BasePageComponent {
     });
   }
 
+  // 刷新
+  loadInitData = () => {
+    this.props.dispatch({
+      type: `${namespace}/fetchList`,
+    });
+  };
+
   handleAdd = () => {
     showCreateModal({
       title: formatMessage({ id: 'form.consumption.addModal.title' }),
@@ -62,6 +69,42 @@ class ConsumptionList extends BasePageComponent {
           rules: [{ required: true, message: formatMessage({ id: 'form.validation.required' }) }],
         },
         {
+          name: formatMessage({ id: 'form.consumption.isOnSale.label' }), // 是否打折
+          type: 'radio',
+          field: 'isOnSale',
+          value: 'false',
+          rules: [
+            { required: true, message: formatMessage({ id: 'app.filter.select_pleaseChoose' }) },
+          ],
+          dataSource: [
+            {
+              text: '是',
+              value: 'true',
+            },
+            {
+              text: '否',
+              value: 'false',
+            },
+          ],
+        },
+        {
+          name: formatMessage({ id: 'form.consumption.discount.label' }),
+          type: 'input-number',
+          field: 'discount',
+          value: 100,
+          formatter: '%',
+          inputProps: {
+            min: 0,
+            max: 100,
+            // style: { width: '100%' },
+          },
+          placeholder: formatMessage({ id: 'app.filter.text_pleaseInput' }),
+          hide: form => form.getFieldValue('isOnSale') !== 'true',
+          // inputProps: {
+          //   disabled: form => form.getFieldValue('isOnSale') !== 'true',
+          // },
+        },
+        {
           name: formatMessage({ id: 'form.consumption.isScore.label' }), // 是否能用积分抵扣
           type: 'radio',
           field: 'isScore',
@@ -85,15 +128,6 @@ class ConsumptionList extends BasePageComponent {
           ],
         },
         {
-          name: formatMessage({ id: 'form.consumption.scorePercent.label' }),
-          field: 'scorePercent',
-          placeholder: formatMessage({ id: 'app.filter.text_pleaseInput' }),
-          hide: form => form.getFieldValue('isScore') !== 'true',
-          // inputProps: {
-          //   disabled: form => form.getFieldValue('isScore') !== 'true',
-          // },
-        },
-        {
           name: formatMessage({ id: 'form.consumption.orderCreationDate.label' }),
           type: 'date',
           field: 'orderCreationDate',
@@ -112,16 +146,41 @@ class ConsumptionList extends BasePageComponent {
       onHandleOk: values => {
         const { dispatch } = this.props;
         dispatch({
-          type: `${namespace}/fetchAddUserInfo`,
-          payload: values,
+          // 先判断订单编号是否存在 再判断会员卡号是否存在 再添加
+          type: `${namespace}/fetchOrderCodeVerify`,
+          payload: { orderCode: values.orderCode },
         }).then(res => {
-          if (res.success) {
-            message.success(res.message || '添加成功');
-            this.loadInitData(); // 刷新列表
-          } else {
+          if (res.isExistence) {
             Modal.error({
               title: '添加失败',
-              content: res.message,
+              content: '订单编号不能重复',
+            });
+          } else {
+            dispatch({
+              type: `${namespace}/fetchCardNumVerify`,
+              payload: { cardNum: values.cardNum },
+            }).then(re => {
+              if (!re.isExistence) {
+                Modal.error({
+                  title: '添加失败',
+                  content: '会员卡号不存在',
+                });
+              } else {
+                dispatch({
+                  type: `${namespace}/fetchAddConsumptionInfo`,
+                  payload: values,
+                }).then(r => {
+                  if (r.success) {
+                    message.success(r.message || '添加成功');
+                    this.loadInitData(); // 刷新列表
+                  } else {
+                    Modal.error({
+                      title: '添加失败',
+                      content: r.message,
+                    });
+                  }
+                });
+              }
             });
           }
         });

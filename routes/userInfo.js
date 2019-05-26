@@ -39,7 +39,7 @@ router.post("/info", (req, res) => {
     });
     // 查询
     await new Promise(function(open) {
-      let sql = "select b.cardNum, cardActiveDate, vipAmount, cardBalance, vipCredit from user_info as a, card_info as b where a.cardNum = b.cardNum ";
+      let sql = "select b.cardNum, cardActiveDate, vipAmount, cardBalance, vipCredit, category from user_info as a, card_info as b where a.cardNum = b.cardNum ";
       if (req.body.cardNum) {
         sql += "and b.cardNum = ? ";
         params.push(req.body.cardNum);
@@ -86,9 +86,8 @@ router.post("/add", (req, res) => {
     await new Promise((resolve, reject) => {
       let cardSql = "insert into card_info set cardNum = ?, mobile = ?, vipAmount = ?, vipCredit = ?, cardBalance = ?, cardActiveDate = ?";
       pool.query(cardSql, cardParams, (err, result) => {
-        console.log(cardSql);
         if (err) reject(err);
-        if (result > 0) {
+        if (result.affectedRows > 0) {
           obj.success = true;
           obj.message = '添加成功';
         } else {
@@ -111,9 +110,8 @@ router.post("/add", (req, res) => {
         userParams.push(req.body.email);
       }
       pool.query(userSql, userParams, (err, result) => {
-        console.log(userSql);
         if (err) reject(err);
-        if (result > 0) {
+        if (result.insertId > 0) {
           obj.success = true;
           obj.message = '添加成功';
         } else {
@@ -144,7 +142,24 @@ router.post("/mobileVerify", (req, res) => {
     res
   );
 });
-
+//验证订单编号是否存在
+router.post("/oderCodeVerify", (req, res) => {
+  check(
+    "select orderCode from consumption_info where orderCode = ?",
+    req.body.orderCode,
+    "订单编号",
+    res
+  );
+});
+//验证会员卡号是否存在
+router.post("/cardNumVerify", (req, res) => {
+  check(
+    "select cardNum from card_info where cardNum = ?",
+    req.body.cardNum,
+    "会员卡号",
+    res
+  );
+});
 //验证函数
 function check(sql, params, name, res) {
   let obj = {};

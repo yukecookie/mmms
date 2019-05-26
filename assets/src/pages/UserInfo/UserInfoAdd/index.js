@@ -49,18 +49,15 @@ class UserInfoAdd extends BasePageComponent {
     if (!re.test(value)) {
       callback('手机号格式不正确');
     } else {
-      this.props
-        .dispatch({
-          type: `${namespace}/fetchMobileVerify`,
-          payload: { mobile: value },
-        })
-        .then(res => {
+      this.props.dispatch({
+        type: `${namespace}/fetchMobileVerify`,
+        payload: { mobile: value },
+        callback: res => {
           if (res.isExistence) {
             callback('手机号已被注册');
-          } else {
-            callback();
           }
-        });
+        },
+      });
     }
     callback();
   };
@@ -200,18 +197,45 @@ class UserInfoAdd extends BasePageComponent {
           },
         ],
         onHandleOk: values => {
-          // const { dispatch } = this.props;
           dispatch({
-            type: `${namespace}/fetchAddUserInfo`,
-            payload: values,
+            // 先判断用户名是否存在
+            type: `${namespace}/fetchUserNameVerify`,
+            payload: { userName: values.userName },
           }).then(res => {
-            if (res.success) {
-              message.success(res.message || '添加成功');
-              this.loadInitData(); // 刷新列表
-            } else {
+            if (res.isExistence) {
               Modal.error({
                 title: '添加失败',
-                content: res.message,
+                content: '用户名已被注册',
+              });
+            } else {
+              dispatch({
+                // 再判断手机号是否存在
+                type: `${namespace}/fetchMobileVerify`,
+                payload: { mobile: values.mobile },
+                callback: re => {
+                  if (re.isExistence) {
+                    Modal.error({
+                      title: '添加失败',
+                      content: '手机号已被注册',
+                    });
+                  } else {
+                    dispatch({
+                      // 最后添加
+                      type: `${namespace}/fetchAddUserInfo`,
+                      payload: values,
+                    }).then(r => {
+                      if (r.success) {
+                        message.success(r.message || '添加成功');
+                        this.loadInitData(); // 刷新列表
+                      } else {
+                        Modal.error({
+                          title: '添加失败',
+                          content: r.message,
+                        });
+                      }
+                    });
+                  }
+                },
               });
             }
           });
@@ -281,6 +305,13 @@ class UserInfoAdd extends BasePageComponent {
       dataIndex: 'cardActiveDate',
       sorter: true,
       key: 'cardActiveDate',
+    },
+    {
+      title: formatMessage({ id: 'form.userInfo.category.label' }), // 会员类别
+      width: 150,
+      dataIndex: 'category',
+      sorter: true,
+      key: 'category',
     },
     {
       title: formatMessage({ id: 'form.userInfo.operation.label' }), // 操作

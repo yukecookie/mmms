@@ -1,8 +1,8 @@
 const mysql = require('mysql');
 var pool = mysql.createPool({
   host: 'localhost',
-  user: 'yukecookie',
-  password: '1519',
+  user: 'root',
+  password: 'yukecookie',
   database: 'j2ee',
   connectionLimit: 10 
 });
